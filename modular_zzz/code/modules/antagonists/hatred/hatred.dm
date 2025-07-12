@@ -141,7 +141,7 @@
 	RegisterSignal(H, COMSIG_LIVING_LIFE, PROC_REF(check_hatred_off_station)) // almost like anchor implant, but doesn't hurt
 	RegisterSignals(H, COMSIG_LIVING_ADJUST_STANDARD_DAMAGE_TYPES, PROC_REF(on_try_healing)) // for AdjustXXXLoss()
 	RegisterSignal(H, COMSIG_MOB_EQUIPPED_ITEM, PROC_REF(check_knife)) // any knife we pick might be our deadliest weapon
-	addtimer(CALLBACK(src, PROC_REF(alarm_station)), 10 SECONDS, TIMER_DELETE_ME) // Give a player a moment to understand what's going on.
+	addtimer(CALLBACK(src, PROC_REF(alarm_station)), 5 SECONDS, TIMER_DELETE_ME) // Think FAST.
 
 /datum/antagonist/hatred/proc/evaluate_security()
 	var/security_alive = length(SSjob.get_living_sec())
