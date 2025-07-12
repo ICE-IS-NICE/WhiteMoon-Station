@@ -45,7 +45,7 @@
 	antagpanel_category = "Mass Shooter"
 	roundend_category = "Mass Shooter"
 	pref_flag = ROLE_LONE_OPERATIVE
-	antag_moodlet = /datum/mood_event/focused
+	// antag_moodlet = /datum/mood_event/focused
 	suicide_cry = "I REGRET NOTHING."
 	show_to_ghosts = TRUE
 	show_in_antagpanel = FALSE // only for ghosts
