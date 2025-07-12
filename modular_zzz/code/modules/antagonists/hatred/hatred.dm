@@ -5,7 +5,7 @@
  * а также наличия конструктивного фидбека игроков.
  *
  * Краткое пояснение концепта антага и игромеханических решений:
- * 		Концепт: мажорный мидраунд антаг для медиум/хард динамика с целью моментального массового ПВП пиздореза. Почти как Lone Operative, но этот не должен
+ * 		Концепт: мажорный мидраунд антаг для хард динамика с целью моментального массового ПВП пиздореза. Почти как Lone Operative, но этот не должен
  * взрывать нюку и завершать раунд. Минимум манча и времени на разогрев. Только при существенном онлайне и с достаточным количеством живых офицеров СБ.
  * 		Хил от убийства других игроков: как и в оригинальной игре персонаж восстанавливает здоровье от кинематографичных убийств (glory kills) и это является
  * единственным способом востановить здоровье. Я полагаю и в сске оно будет выглядеть уместно и вполне сбалансированно. Игроку для восстановления
@@ -116,12 +116,16 @@
 	// H.SetParalyzed(0, TRUE)
 	. = ..()
 	// TRAIT_NICE_SHOT TRAIT_DOUBLE_TAP TRAIT_ANALGESIA
+	// special traits
 	ADD_TRAIT(H, TRAIT_SLEEPIMMUNE, "hatred") // I challenge you to a glorious fight!
 	ADD_TRAIT(H, TRAIT_VIRUS_RESISTANCE, "hatred")
 	ADD_TRAIT(H, TRAIT_NONATURALHEAL, "hatred") // for heal_damage()
 	ADD_TRAIT(H, TRAIT_FEARLESS, "hatred")
 	ADD_TRAIT(H, TRAIT_STRONG_GRABBER, "hatred") // This way player will have less problems with his targets run/crawl away during glory kills
 	ADD_TRAIT(H, TRAIT_QUICKER_CARRY, "hatred")
+	ADD_TRAIT(H, TRAIT_NODISMEMBER, "hatred") // if a player loses his arm, he won't be able to shoot nor drop his gun. it would be unplayable.
+	// ADD_TRAIT(H, TRAIT_NOSOFTCRIT, "hatred")
+	// general quirks
 	ADD_TRAIT(H, TRAIT_NIGHT_VISION, "hatred")
 	ADD_TRAIT(H, TRAIT_DRINKS_BLOOD, "hatred") // why not
 	ADD_TRAIT(H, TRAIT_EVIL, "hatred")
@@ -129,9 +133,7 @@
 	ADD_TRAIT(H, TRAIT_JUMPER, "hatred")
 	ADD_TRAIT(H, TRAIT_TOUGH, "hatred")
 	ADD_TRAIT(H, TRAIT_FREERUNNING, "hatred")
-	// ADD_TRAIT(H, TRAIT_NOSOFTCRIT, "hatred")
 	H.add_movespeed_mod_immunities("hatred", /datum/movespeed_modifier/damage_slowdown)
-	// H.revive(ADMIN_HEAL_ALL)
 	appear_on_station()
 	allowed_z_levels += SSmapping.levels_by_trait(ZTRAIT_CENTCOM)
 	allowed_z_levels += SSmapping.levels_by_trait(ZTRAIT_RESERVED)
@@ -264,8 +266,6 @@
 	var/is_glory = TRUE
 	if(target?.stat == DEAD || !target.client) // already dead bodies or npcs don't count
 		is_glory = FALSE
-	else
-		playsound(owner.current, pick(killing_speech), vol = 50, vary = FALSE, ignore_walls = FALSE)
 	if(do_after(killer, 6 SECONDS, target))
 		target.visible_message(span_warning("[killer] slits [target]'s throat!"), span_userdanger("[killer] slits your throat!"))
 		SET_ATTACK_FORCE(attack_modifiers, 200)
@@ -300,8 +300,6 @@
 	var/is_glory = TRUE
 	if(target?.stat == DEAD || !target.client) // already dead bodies or npcs don't count
 		is_glory = FALSE
-	else
-		playsound(user, pick(Ha.killing_speech), vol = 50, vary = FALSE, ignore_walls = FALSE)
 	. = ..(user, target, params, bypass_timer, time_to_kill = 8 SECONDS)
 	if(!. || user == target || !is_glory)
 		return
@@ -309,6 +307,8 @@
 
 /obj/item/proc/check_glory_kill(mob/living/carbon/human/user, mob/living/carbon/human/target)
 	if((QDELETED(target) || target?.stat == DEAD) && !QDELETED(user) && (user?.stat in list(CONSCIOUS, SOFT_CRIT)))
+		var/datum/antagonist/hatred/Ha = user.mind.has_antag_datum(/datum/antagonist/hatred)
+		playsound(user, pick(Ha.killing_speech), vol = 50, vary = FALSE, ignore_walls = FALSE)
 		user.fully_heal() // the only way of healing
 		// user.do_adrenaline(150, TRUE, 0, 0, TRUE, list(/datum/reagent/medicine/inaprovaline = 10, /datum/reagent/medicine/synaptizine = 15, /datum/reagent/medicine/regen_jelly = 20, /datum/reagent/medicine/stimulants = 20), "<span class='boldnotice'>You feel a sudden surge of energy!</span>")
 		user.visible_message("As victim's blood splashes onto [src], it starts glowing menacingly and its wielder seemingly regaining his strength and vitality.")
@@ -331,7 +331,7 @@
 	desc = "The scratches on this rifle say: \"The Genocide Machine\"."
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	burst_fire_selection = FALSE
-	actions_types = list()
+	actions_types = null
 	burst_size = 1
 	burst_delay = 2
 	weapon_weight = WEAPON_HEAVY
@@ -363,9 +363,19 @@
 /obj/item/gun/ballistic/automatic/ar/ak12/hatred/proc/on_wielder_death()
 	SIGNAL_HANDLER
 	if(!QDELETED(src))
-		var/obj/item/I = new /obj/item/gun/ballistic/automatic/ar/ak12(get_turf(src))
+		var/obj/item/gun/ballistic/I = new /obj/item/gun/ballistic/automatic/ar/ak12(get_turf(src))
 		I.name = "\improper AK-12 rifle of Faded Hatred"
 		I.desc = "It looks less menacing than before. The blood stained scratches on this rifle say: \"The Genocide Machine\"."
+		I.burst_fire_selection = FALSE
+		I.actions_types = null
+		var/datum/action/A = locate(/datum/action/item_action/toggle_firemode) in I.actions
+		if(A)
+			I.remove_item_action(A)
+		I.burst_size = 1
+		I.burst_delay = 2
+		I.weapon_weight = WEAPON_HEAVY
+		I.projectile_damage_multiplier = 0.8
+		I.AddComponent(/datum/component/automatic_fire, 0.3 SECONDS)
 		qdel(src)
 
 /obj/item/gun/ballistic/automatic/ar/ak12/hatred/dropped(mob/user, silent)
@@ -417,9 +427,12 @@
 /obj/item/gun/ballistic/shotgun/riot/hatred/proc/on_wielder_death()
 	SIGNAL_HANDLER
 	if(!QDELETED(src))
-		var/obj/item/I = new /obj/item/gun/ballistic/shotgun/riot(get_turf(src))
+		var/obj/item/gun/ballistic/I = new /obj/item/gun/ballistic/shotgun/riot(get_turf(src))
 		I.name = "\improper Riot Shotgun of Faded Hatred"
 		I.desc = "It looks less menacing than before. The blood stained scratches on this shotgun say: \"The Bringer of Doom\"."
+		I.box_reload_penalty = FALSE
+		// I.rack_delay = 5
+		// I.fire_delay = 5
 		qdel(src)
 
 /obj/item/gun/ballistic/shotgun/riot/hatred/dropped(mob/user, silent)
@@ -704,7 +717,7 @@
 	if(!.)
 		return
 	. = FALSE
-	if(SSsecurity_level.get_current_level_as_number() in list(SEC_LEVEL_GREEN, SEC_LEVEL_BLUE)) // разбавляем эксту внутривенно
+	if(SSsecurity_level.get_current_level_as_number() in list(SEC_LEVEL_GREEN)) // разбавляем эксту внутривенно
 		if(length(SSjob.get_living_sec()) < 4)
 			return
 	else if(length(SSjob.get_living_sec()) < 5) // я желаю достойного сопротивления.
