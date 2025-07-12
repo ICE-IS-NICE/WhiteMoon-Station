@@ -264,8 +264,6 @@
 	var/is_glory = TRUE
 	if(target?.stat == DEAD || !target.client) // already dead bodies or npcs don't count
 		is_glory = FALSE
-	else
-		playsound(owner.current, pick(killing_speech), vol = 50, vary = FALSE, ignore_walls = FALSE)
 	if(do_after(killer, 6 SECONDS, target))
 		target.visible_message(span_warning("[killer] slits [target]'s throat!"), span_userdanger("[killer] slits your throat!"))
 		SET_ATTACK_FORCE(attack_modifiers, 200)
@@ -300,8 +298,6 @@
 	var/is_glory = TRUE
 	if(target?.stat == DEAD || !target.client) // already dead bodies or npcs don't count
 		is_glory = FALSE
-	else
-		playsound(user, pick(Ha.killing_speech), vol = 50, vary = FALSE, ignore_walls = FALSE)
 	. = ..(user, target, params, bypass_timer, time_to_kill = 8 SECONDS)
 	if(!. || user == target || !is_glory)
 		return
