@@ -117,23 +117,30 @@
 	. = ..()
 	// TRAIT_NICE_SHOT TRAIT_DOUBLE_TAP TRAIT_ANALGESIA
 	// special traits
+	// SPECIAL TRAITS
 	ADD_TRAIT(H, TRAIT_SLEEPIMMUNE, "hatred") // I challenge you to a glorious fight!
 	ADD_TRAIT(H, TRAIT_VIRUS_RESISTANCE, "hatred")
 	ADD_TRAIT(H, TRAIT_NONATURALHEAL, "hatred") // for heal_damage()
 	ADD_TRAIT(H, TRAIT_FEARLESS, "hatred")
 	ADD_TRAIT(H, TRAIT_STRONG_GRABBER, "hatred") // This way player will have less problems with his targets run/crawl away during glory kills
 	ADD_TRAIT(H, TRAIT_QUICKER_CARRY, "hatred")
+	ADD_TRAIT(H, TRAIT_DRINKS_BLOOD, "hatred") // why not
 	ADD_TRAIT(H, TRAIT_NODISMEMBER, "hatred") // if a player loses his arm, he won't be able to shoot nor drop his gun. it would be unplayable.
 	// ADD_TRAIT(H, TRAIT_NOSOFTCRIT, "hatred")
-	// general quirks
-	ADD_TRAIT(H, TRAIT_NIGHT_VISION, "hatred")
-	ADD_TRAIT(H, TRAIT_DRINKS_BLOOD, "hatred") // why not
-	ADD_TRAIT(H, TRAIT_EVIL, "hatred")
-	ADD_TRAIT(H, TRAIT_THROWINGARM, "hatred")
-	ADD_TRAIT(H, TRAIT_JUMPER, "hatred")
-	ADD_TRAIT(H, TRAIT_TOUGH, "hatred")
-	ADD_TRAIT(H, TRAIT_FREERUNNING, "hatred")
 	H.add_movespeed_mod_immunities("hatred", /datum/movespeed_modifier/damage_slowdown)
+	//  GENERAL QUIRKS
+	H.add_quirk(/datum/quirk/night_vision, announce = FALSE) // ADD_TRAIT(H, TRAIT_NIGHT_VISION, "hatred")
+	ADD_TRAIT(H, TRAIT_EVIL, "hatred") // H.add_quirk(/datum/quirk/evil, announce = FALSE) // no unwanted post_add() text
+	H.add_quirk(/datum/quirk/throwingarm, announce = FALSE) // ADD_TRAIT(H, TRAIT_THROWINGARM, "hatred")
+	H.add_quirk(/datum/quirk/jumper, announce = FALSE) // ADD_TRAIT(H, TRAIT_JUMPER, "hatred")
+	H.add_quirk(/datum/quirk/tough, announce = FALSE) // ADD_TRAIT(H, TRAIT_TOUGH, "hatred")
+	H.add_quirk(/datum/quirk/freerunning, announce = FALSE) // ADD_TRAIT(H, TRAIT_FREERUNNING, "hatred")
+	// GENERAL SPEED DEBUFFS FROM QUIRKS
+	H.add_quirk(/datum/quirk/depression, announce = FALSE)
+	H.add_quirk(/datum/quirk/hungry, announce = FALSE)
+	H.add_quirk(/datum/quirk/thirsty, announce = FALSE)
+	// H.add_quirk(/datum/quirk/unstable, announce = FALSE)
+	// H.add_quirk(/datum/quirk/all_nighter, announce = FALSE)
 	appear_on_station()
 	allowed_z_levels += SSmapping.levels_by_trait(ZTRAIT_CENTCOM)
 	allowed_z_levels += SSmapping.levels_by_trait(ZTRAIT_RESERVED)
