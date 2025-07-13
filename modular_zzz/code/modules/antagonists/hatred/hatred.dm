@@ -64,6 +64,7 @@
 	var/list/high_gear = list("Belt of Hatred", "More armor")
 	var/chosen_gun = null
 	var/chosen_high_gear = null
+	var/next_speech_time = 0
 	var/list/killing_speech = list(	'modular_zzz/code/modules/antagonists/hatred/killing_speech/hatred_speech_1.ogg',
 									'modular_zzz/code/modules/antagonists/hatred/killing_speech/hatred_speech_2.ogg',
 									'modular_zzz/code/modules/antagonists/hatred/killing_speech/hatred_speech_3.ogg',
@@ -276,6 +277,9 @@
 	var/is_glory = TRUE
 	if(target?.stat == DEAD || !target.client) // already dead bodies or npcs don't count
 		is_glory = FALSE
+	else if(next_speech_time <= world.time)
+		playsound(owner.current, pick(killing_speech), vol = 50, vary = FALSE, ignore_walls = FALSE)
+		next_speech_time = world.time + 10 SECONDS
 	if(do_after(killer, 6 SECONDS, target))
 		target.visible_message(span_warning("[killer] slits [target]'s throat!"), span_userdanger("[killer] slits your throat!"))
 		SET_ATTACK_FORCE(attack_modifiers, 200)
@@ -319,6 +323,9 @@
 	var/is_glory = TRUE
 	if(target?.stat == DEAD || !target.client) // already dead bodies or npcs don't count
 		is_glory = FALSE
+	else if(Ha.next_speech_time <= world.time)
+		playsound(user, pick(Ha.killing_speech), vol = 50, vary = FALSE, ignore_walls = FALSE)
+		Ha.next_speech_time = world.time + 10 SECONDS
 	var/new_ttk = 8 SECONDS
 	if(istype(src, /obj/item/gun/ballistic/automatic/pistol/m1911/hatred))
 		new_ttk = 6 SECONDS
@@ -329,8 +336,6 @@
 
 /obj/item/proc/check_glory_kill(mob/living/carbon/human/user, mob/living/carbon/human/target)
 	if((QDELETED(target) || target?.stat == DEAD) && !QDELETED(user) && (user?.stat in list(CONSCIOUS, SOFT_CRIT)))
-		var/datum/antagonist/hatred/Ha = user.mind.has_antag_datum(/datum/antagonist/hatred)
-		playsound(user, pick(Ha.killing_speech), vol = 50, vary = FALSE, ignore_walls = FALSE)
 		user.fully_heal() // the only way of healing
 		// user.do_adrenaline(150, TRUE, 0, 0, TRUE, list(/datum/reagent/medicine/inaprovaline = 10, /datum/reagent/medicine/synaptizine = 15, /datum/reagent/medicine/regen_jelly = 20, /datum/reagent/medicine/stimulants = 20), "<span class='boldnotice'>You feel a sudden surge of energy!</span>")
 		user.visible_message("As victim's blood splashes onto [src], it starts glowing menacingly and its wielder seemingly regaining his strength and vitality.")
