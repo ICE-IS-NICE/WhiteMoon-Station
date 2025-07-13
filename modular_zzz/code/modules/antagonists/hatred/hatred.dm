@@ -478,7 +478,7 @@
 	// 90% = 27
 	// 80% = 24
 	projectile_damage_multiplier = 0.8
-	dual_wield_spread = 5
+	dual_wield_spread = 2
 	var/mob/living/carbon/human/original_owner = null
 
 /obj/item/ammo_box/magazine/m45/ap
@@ -672,7 +672,7 @@
 	. = ..()
 	if(slot == ITEM_SLOT_OCLOTHING)
 		ADD_TRAIT(src, TRAIT_NODROP, "hatred")
-		var/datum/antagonist/hatred/Ha = user.mind.has_antag_datum(/datum/antagonist/hatred)
+		var/datum/antagonist/hatred/Ha = user.mind?.has_antag_datum(/datum/antagonist/hatred)
 		if(Ha?.chosen_gun == "Executioner's pistols")
 			RegisterSignal(user, COMSIG_LIVING_DEATH, PROC_REF(on_hatred_death))
 
