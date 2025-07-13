@@ -116,7 +116,6 @@
 	// H.SetParalyzed(0, TRUE)
 	. = ..()
 	// TRAIT_NICE_SHOT TRAIT_DOUBLE_TAP TRAIT_ANALGESIA
-	// special traits
 	// SPECIAL TRAITS
 	ADD_TRAIT(H, TRAIT_SLEEPIMMUNE, "hatred") // I challenge you to a glorious fight!
 	ADD_TRAIT(H, TRAIT_VIRUS_RESISTANCE, "hatred")
