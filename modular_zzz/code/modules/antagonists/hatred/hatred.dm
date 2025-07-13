@@ -361,7 +361,7 @@
 	// 90% = 32
 	// 85% = 30
 	// 80% = 28
-	projectile_damage_multiplier = 0.85
+	projectile_damage_multiplier = 0.8
 	var/mob/living/carbon/human/original_owner = null
 
 /obj/item/gun/ballistic/automatic/ar/ak12/hatred/Initialize(mapload)
@@ -400,7 +400,7 @@
 		I.burst_size = 1
 		I.burst_delay = 2
 		I.weapon_weight = WEAPON_HEAVY
-		I.projectile_damage_multiplier = 0.8
+		I.projectile_damage_multiplier = 0.75
 		I.AddComponent(/datum/component/automatic_fire, 0.3 SECONDS)
 		qdel(src)
 
