@@ -341,7 +341,11 @@
 	burst_size = 1
 	burst_delay = 2
 	weapon_weight = WEAPON_HEAVY
-	projectile_damage_multiplier = 0.9
+	// 100% = 35
+	// 90% = 32
+	// 85% = 30
+	// 80% = 28
+	projectile_damage_multiplier = 0.85
 	var/mob/living/carbon/human/original_wielder = null
 
 /obj/item/gun/ballistic/automatic/ar/ak12/hatred/Initialize(mapload)
