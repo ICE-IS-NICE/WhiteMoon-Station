@@ -432,7 +432,7 @@
 
 /obj/item/ammo_box/magazine/internal/shot/hatred
 	ammo_type = /obj/item/ammo_casing/shotgun/magnum
-	max_ammo = 6
+	max_ammo = 6 // there are 7 shells in default ammo boxes, so shotgun has perfect 6+1 slots.
 
 /obj/item/gun/ballistic/shotgun/riot/hatred/Destroy()
 	if(!isnull(original_owner))
@@ -800,7 +800,7 @@
 	var/obj/item/storage/belt/B = H.get_item_by_slot(ITEM_SLOT_BELT)
 	new /obj/item/grenade/syndieminibomb/concussion(B)
 	new /obj/item/grenade/frag(B)
-	new /obj/item/grenade/frag(B)
+	// new /obj/item/grenade/frag(B)
 
 	var/obj/item/storage/pouch/ammo/hatred/P = H.get_item_by_slot(ITEM_SLOT_LPOCKET)
 	var/datum/antagonist/hatred/Ha = H.mind?.has_antag_datum(/datum/antagonist/hatred)
