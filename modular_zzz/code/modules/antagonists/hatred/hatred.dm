@@ -59,9 +59,9 @@
 	 */
 	var/gear_level = 1
 	var/list/low_guns = list("Pistol", "Double-barreled shotgun") // NOT IMPLEMENTED YET!
-	var/list/classic_guns = list("AK12","Riot Shotgun", "Executioner's pistols")
+	var/list/classic_guns = list("AK12","Riot Shotgun", "Pistols")
 	// there won't be special level 2 guns, because I don't want antag to have cheat guns. Level 2 gear is always better stats/traits for level 1 gear.
-	var/list/high_gear = list("Belt of Hatred", "More armor")
+	var/list/high_gear = list("Belt of Hatred", "More armor", "Faster executions")
 	var/chosen_gun = null
 	var/chosen_high_gear = null
 	var/next_speech_time = 0
@@ -96,7 +96,7 @@
 	greet_text += "У тебя лишь две цели: <u>убивать</u> и <u>умереть славной смертью</u>.<br>"
 	greet_text += "Твое проклятое снаряжение неразлучно с тобою и подстегивает тебя продолжать соврешать геноцид беззащитных гражданских.<br>"
 	greet_text += "Твоё [span_red("Оружие Ненависти")] и неутолимая жажда убивать вознаграждают тебя, ибо завершающий выстрел в упор в голову (рот) исцеляет твои раны. Обычная медицина бессильна.<br>"
-	if(chosen_gun == "Executioner's pistols")
+	if(chosen_gun == "Pistols")
 		greet_text += "[span_red("Кобура Ненависти")] всегда готова предоставить тебе особое парное оружие для быстрой казни. После использования можешь просто выбросить их, ибо их цель была выполнена.<br>"
 	else
 		greet_text += "[span_red("Cумка для патронов")] сама пополняет пустые магазины/картриджи/клипсы. Никогда не выбрасывай их!<br>"
@@ -283,7 +283,8 @@
 	else if(next_speech_time <= world.time)
 		playsound(owner.current, pick(killing_speech), vol = 50, vary = FALSE, ignore_walls = FALSE)
 		next_speech_time = world.time + 10 SECONDS
-	if(do_after(killer, 6 SECONDS, target))
+	var/time_to_kill = chosen_high_gear == "Faster executions" ? 5 SECONDS : 7 SECONDS
+	if(do_after(killer, time_to_kill, target))
 		target.visible_message(span_warning("[killer] slits [target]'s throat!"), span_userdanger("[killer] slits your throat!"))
 		SET_ATTACK_FORCE(attack_modifiers, 200)
 		if(is_glory)
@@ -329,9 +330,9 @@
 	else if(Ha.next_speech_time <= world.time)
 		playsound(user, pick(Ha.killing_speech), vol = 50, vary = FALSE, ignore_walls = FALSE)
 		Ha.next_speech_time = world.time + 10 SECONDS
-	var/new_ttk = 8 SECONDS
-	if(istype(src, /obj/item/gun/ballistic/automatic/pistol/m1911/hatred))
-		new_ttk = 6 SECONDS
+	var/new_ttk = 9 SECONDS
+	if(Ha.chosen_high_gear == "Faster executions")
+		new_ttk = 7 SECONDS
 	. = ..(user, target, params, bypass_timer, time_to_kill = new_ttk)
 	if(!. || user == target || !is_glory)
 		return
@@ -699,7 +700,7 @@
 	if(slot == ITEM_SLOT_OCLOTHING)
 		ADD_TRAIT(src, TRAIT_NODROP, "hatred")
 		var/datum/antagonist/hatred/Ha = user.mind?.has_antag_datum(/datum/antagonist/hatred)
-		if(Ha?.chosen_gun == "Executioner's pistols")
+		if(Ha?.chosen_gun == "Pistols")
 			RegisterSignal(user, COMSIG_LIVING_DEATH, PROC_REF(on_hatred_death))
 
 /obj/item/clothing/suit/jacket/leather_trenchcoat/hatred/proc/on_hatred_death()
@@ -772,11 +773,11 @@
 			r_hand = /obj/item/gun/ballistic/automatic/ar/ak12/hatred
 		if("Riot Shotgun")
 			r_hand = /obj/item/gun/ballistic/shotgun/riot/hatred
-		if("Executioner's pistols")
+		if("Pistols")
 			suit_store = /obj/item/storage/belt/holster/hatred
 			l_pocket = null
 	if(Ha.gear_level == 2)
-		if(Ha.chosen_gun == "Executioner's pistols")
+		if(Ha.chosen_gun == "Pistols")
 			Ha.high_gear += "Shoot faster"
 		Ha.chosen_high_gear = tgui_input_list(H, "Выбери дополнительную экипировку и сделай это БЫСТРО!", "Выбери оружие геноцида", Ha.high_gear, Ha.high_gear[1], 10 SECONDS)
 		switch(Ha.chosen_high_gear)
@@ -837,7 +838,7 @@
 			new /obj/item/ammo_box/advanced/s12gauge/dragonsbreath(P)
 			new /obj/item/ammo_box/advanced/s12gauge/frangible(P)
 			// new /obj/item/ammo_box/advanced/s12gauge/breaching(P)
-		if("Executioner's pistols")
+		if("Pistols")
 			I = H.get_item_by_slot(ITEM_SLOT_OCLOTHING)
 			I.resistance_flags = FIRE_PROOF | ACID_PROOF // to prevent the holster of Hatred to be dropped and lost forever.
 
