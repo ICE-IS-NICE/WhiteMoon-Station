@@ -490,13 +490,13 @@
 	// 90% = 27
 	// 80% = 24
 	projectile_damage_multiplier = 0.9
-	dual_wield_spread = 5
+	dual_wield_spread = 4
 	var/mob/living/carbon/human/original_owner = null
 
-/obj/item/ammo_box/magazine/m45/ap
-	name = "handgun magazine (.45 AP)"
-	MAGAZINE_TYPE_ARMORPIERCE
-	ammo_type = /obj/item/ammo_casing/c45/ap
+// /obj/item/ammo_box/magazine/m45/ap
+// 	name = "handgun magazine (.45 AP)"
+// 	MAGAZINE_TYPE_ARMORPIERCE
+// 	ammo_type = /obj/item/ammo_casing/c45/ap
 
 /obj/item/gun/ballistic/automatic/pistol/m1911/hatred/equipped(mob/user, slot, initial)
 	. = ..()
