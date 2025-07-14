@@ -330,9 +330,7 @@
 	else if(Ha.next_speech_time <= world.time)
 		playsound(user, pick(Ha.killing_speech), vol = 50, vary = FALSE, ignore_walls = FALSE)
 		Ha.next_speech_time = world.time + 10 SECONDS
-	var/new_ttk = 9 SECONDS
-	if(Ha.chosen_high_gear == "Faster executions")
-		new_ttk = 7 SECONDS
+	var/new_ttk = Ha.chosen_high_gear == "Faster executions" ? 7 SECONDS : 9 SECONDS
 	. = ..(user, target, params, bypass_timer, time_to_kill = new_ttk)
 	if(!. || user == target || !is_glory)
 		return
