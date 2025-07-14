@@ -175,6 +175,9 @@
 /datum/antagonist/hatred/proc/make_authentic_body()
 	var/mob/living/carbon/human/H = owner.current
 	H.real_name = "The Man without a name"
+	H.name = H.real_name
+	H.dna.real_name = H.real_name
+	H.mind?.name = H.real_name
 	H.set_species(/datum/species/human)
 	H.set_gender(MALE, TRUE, forced = TRUE)
 	H.physique = MALE
@@ -420,12 +423,16 @@
 /obj/item/gun/ballistic/shotgun/riot/hatred
 	name = "\improper Riot Shotgun of Hatred"
 	desc = "The scratches on this shotgun say: \"The Bringer of Doom\"."
-	accepted_magazine_type = /obj/item/ammo_box/magazine/internal/shot/extended // has lethal ammo from the start
+	accepted_magazine_type = /obj/item/ammo_box/magazine/internal/shot/hatred
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	box_reload_penalty = FALSE
 	fire_delay = 5
 	rack_delay = 4
 	var/mob/living/carbon/human/original_owner = null
+
+/obj/item/ammo_box/magazine/internal/shot/hatred
+	ammo_type = /obj/item/ammo_casing/shotgun/magnum
+	max_ammo = 6
 
 /obj/item/gun/ballistic/shotgun/riot/hatred/Destroy()
 	if(!isnull(original_owner))
@@ -482,7 +489,7 @@
 	// 100% = 30
 	// 90% = 27
 	// 80% = 24
-	projectile_damage_multiplier = 0.8
+	projectile_damage_multiplier = 0.9
 	dual_wield_spread = 2
 	var/mob/living/carbon/human/original_owner = null
 
@@ -809,6 +816,7 @@
 			P.atom_storage.max_slots = 10
 			new /obj/item/ammo_box/advanced/s12gauge/magnum(P)
 			new /obj/item/ammo_box/advanced/s12gauge(P)
+			// new /obj/item/ammo_box/magazine/m12g/slug(P)
 			// new /obj/item/ammo_box/advanced/s12gauge/incendiary(P)
 			new /obj/item/ammo_box/advanced/s12gauge/flechette(P)
 			// new /obj/item/ammo_box/advanced/s12gauge/express(P)
