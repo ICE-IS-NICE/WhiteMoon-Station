@@ -130,7 +130,8 @@
 	ADD_TRAIT(H, TRAIT_DRINKS_BLOOD, "hatred") // why not
 	ADD_TRAIT(H, TRAIT_NODISMEMBER, "hatred") // if a player loses his arm, he won't be able to shoot nor drop his gun. it would be unplayable.
 	// ADD_TRAIT(H, TRAIT_NOSOFTCRIT, "hatred")
-	H.add_movespeed_mod_immunities("hatred", /datum/movespeed_modifier/damage_slowdown)
+	H.add_movespeed_mod_immunities("hatred", /datum/movespeed_modifier/damage_slowdown) // I want him to be a bit slower, but indomitable by mere pain.
+	H.add_movespeed_modifier(/datum/movespeed_modifier/hatred)
 	//  GENERAL QUIRKS
 	H.add_quirk(/datum/quirk/night_vision, announce = FALSE) // ADD_TRAIT(H, TRAIT_NIGHT_VISION, "hatred")
 	ADD_TRAIT(H, TRAIT_EVIL, "hatred") // H.add_quirk(/datum/quirk/evil, announce = FALSE) // no unwanted post_add() text
@@ -153,6 +154,9 @@
 	RegisterSignal(H, COMSIG_MOB_EQUIPPED_ITEM, PROC_REF(check_knife)) // any knife we pick might be our deadliest weapon
 	RegisterSignal(H, COMSIG_MOB_TRYING_TO_FIRE_GUN, PROC_REF(check_used_gun))
 	addtimer(CALLBACK(src, PROC_REF(alarm_station)), 5 SECONDS, TIMER_DELETE_ME) // Think FAST.
+
+/datum/movespeed_modifier/hatred
+	multiplicative_slowdown = 0.2
 
 /datum/antagonist/hatred/proc/evaluate_security()
 	var/security_alive = length(SSjob.get_living_sec())
@@ -207,6 +211,12 @@
 	O = new /datum/objective/martyr()
 	O.owner = owner
 	objectives += O
+
+/datum/objective/genocide
+	name = "Genocide of civilians"
+	explanation_text = "Убей столько народу, сколько успеешь за свою короткую оставшуюся жизнь. Не щади никого. Кровь слабых питает тебя."
+	martyr_compatible = TRUE
+	completed = TRUE // i have no idea how to count your personal kills.
 
 /datum/antagonist/hatred/proc/appear_on_station()
 	var/list/possible_spawns = list()
@@ -313,12 +323,6 @@
 		ADD_TRAIT(L, TRAIT_PREVENT_IMPLANT_AUTO_EXPLOSION, "hatred") // no boom on admin remove
 		to_chat(L, span_userdanger("As Hatred leaves your mind, it consumes you completely..."))
 		L.dust(force = TRUE) // from ghosts we come, to ghosts we leave.
-
-/datum/objective/genocide
-	name = "Genocide of civilians"
-	explanation_text = "Убей столько народу, сколько успеешь за свою короткую оставшуюся жизнь. Не щади никого. Кровь слабых питает тебя."
-	martyr_compatible = TRUE
-	completed = TRUE // i have no idea how to count your personal kills.
 
 /obj/item/gun/handle_suicide(mob/living/carbon/human/user, mob/living/carbon/human/target, params, bypass_timer, time_to_kill = 12 SECONDS)
 	var/datum/antagonist/hatred/Ha = user.mind.has_antag_datum(/datum/antagonist/hatred)
