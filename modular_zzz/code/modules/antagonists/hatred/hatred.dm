@@ -140,9 +140,9 @@
 	H.add_quirk(/datum/quirk/tough, announce = FALSE) // ADD_TRAIT(H, TRAIT_TOUGH, "hatred")
 	H.add_quirk(/datum/quirk/freerunning, announce = FALSE) // ADD_TRAIT(H, TRAIT_FREERUNNING, "hatred")
 	// GENERAL SPEED DEBUFFS FROM QUIRKS
-	H.add_quirk(/datum/quirk/depression, announce = FALSE)
-	H.add_quirk(/datum/quirk/hungry, announce = FALSE)
-	H.add_quirk(/datum/quirk/thirsty, announce = FALSE)
+	// H.add_quirk(/datum/quirk/depression, announce = FALSE)
+	// H.add_quirk(/datum/quirk/hungry, announce = FALSE)
+	// H.add_quirk(/datum/quirk/thirsty, announce = FALSE)
 	// H.add_quirk(/datum/quirk/unstable, announce = FALSE)
 	// H.add_quirk(/datum/quirk/all_nighter, announce = FALSE)
 	appear_on_station()
