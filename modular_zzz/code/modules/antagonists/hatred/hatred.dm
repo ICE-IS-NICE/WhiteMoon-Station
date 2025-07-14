@@ -489,7 +489,7 @@
 	// 100% = 30
 	// 90% = 27
 	// 80% = 24
-	projectile_damage_multiplier = 0.9
+	// projectile_damage_multiplier = 0.9
 	dual_wield_spread = 4
 	var/mob/living/carbon/human/original_owner = null
 
