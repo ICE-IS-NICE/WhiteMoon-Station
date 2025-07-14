@@ -482,7 +482,7 @@
 /// THE PISTOL OF HATRED ///
 
 /obj/item/gun/ballistic/automatic/pistol/m1911/hatred
-	spawn_magazine_type = /obj/item/ammo_box/magazine/m45/ap
+	// spawn_magazine_type = /obj/item/ammo_box/magazine/m45/ap
 	name = "\improper M1911 of Hatred"
 	desc = "The scratches on this pistol say: \"The Executioner\"."
 	resistance_flags = FIRE_PROOF | ACID_PROOF
@@ -515,6 +515,20 @@
 		ash.pixel_z = -5
 		ash.pixel_w = rand(-1, 1)
 		qdel(src)
+
+// говно с оффов неправильно обрабатывает стрельбу с двух рук
+/obj/item/gun/ballistic/automatic/pistol/m1911/hatred/process_fire(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
+	. = ..()
+	if(!. || bolt_locked) // if no shot has been made or postfire_empty_checks(.) has already been fully handled
+		return
+	postfire_empty_checks(.)
+
+/obj/item/gun/ballistic/automatic/pistol/m1911/hatred/postfire_empty_checks(last_shot_succeeded)
+	. = ..()
+	if(bolt_locked && ishuman(loc))
+		var/mob/living/carbon/human/H = loc
+		H.dropItemToGround(src, force = TRUE, silent = FALSE)
+		H.visible_message("[H] nonchalantly drops his empty pistol on the ground as soon as he makes a last shot.")
 
 /// THE HOLSTER OF HATRED ///
 
