@@ -135,7 +135,7 @@
 	H.add_quirk(/datum/quirk/night_vision, announce = FALSE) // ADD_TRAIT(H, TRAIT_NIGHT_VISION, "hatred")
 	ADD_TRAIT(H, TRAIT_EVIL, "hatred") // H.add_quirk(/datum/quirk/evil, announce = FALSE) // no unwanted post_add() text
 	H.add_quirk(/datum/quirk/throwingarm, announce = FALSE) // ADD_TRAIT(H, TRAIT_THROWINGARM, "hatred")
-	H.add_quirk(/datum/quirk/jumper, announce = FALSE) // ADD_TRAIT(H, TRAIT_JUMPER, "hatred")
+	// H.add_quirk(/datum/quirk/jumper, announce = FALSE) // ADD_TRAIT(H, TRAIT_JUMPER, "hatred")
 	H.add_quirk(/datum/quirk/tough, announce = FALSE) // ADD_TRAIT(H, TRAIT_TOUGH, "hatred")
 	H.add_quirk(/datum/quirk/freerunning, announce = FALSE) // ADD_TRAIT(H, TRAIT_FREERUNNING, "hatred")
 	// GENERAL SPEED DEBUFFS FROM QUIRKS
