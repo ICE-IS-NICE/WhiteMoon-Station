@@ -655,7 +655,10 @@
 	desc = "The shabby leather overcoat with decent armor paddings. Once it has been splashed with blood you can't take it off anymore."
 	armor_type = /datum/armor/hatred
 	resistance_flags = FIRE_PROOF
-	allowed = list(/obj/item/storage/belt/holster/hatred)
+
+/obj/item/clothing/suit/jacket/leather_trenchcoat/hatred/Initialize(mapload)
+	. = ..()
+	allowed += /obj/item/storage/belt/holster/hatred
 
 // clueless armor stats.
 /datum/armor/hatred
