@@ -412,7 +412,7 @@
 		I.burst_size = 1
 		I.burst_delay = 2
 		I.weapon_weight = WEAPON_HEAVY
-		I.projectile_damage_multiplier = 0.75
+		I.projectile_damage_multiplier = 0.8
 		I.AddComponent(/datum/component/automatic_fire, 0.3 SECONDS)
 		qdel(src)
 
