@@ -45,7 +45,7 @@
 	antagpanel_category = "Mass Shooter"
 	roundend_category = "Mass Shooter"
 	pref_flag = ROLE_LONE_OPERATIVE
-	// antag_moodlet = /datum/mood_event/focused
+	antag_moodlet = /datum/mood_event/focused
 	suicide_cry = "I REGRET NOTHING."
 	show_to_ghosts = TRUE
 	show_in_antagpanel = FALSE // only for ghosts
@@ -121,6 +121,7 @@
 	. = ..()
 	// TRAIT_NICE_SHOT TRAIT_DOUBLE_TAP TRAIT_ANALGESIA
 	// SPECIAL TRAITS
+	// /obj/item/mod/module/power_kick
 	ADD_TRAIT(H, TRAIT_SLEEPIMMUNE, "hatred") // I challenge you to a glorious fight!
 	ADD_TRAIT(H, TRAIT_VIRUS_RESISTANCE, "hatred")
 	ADD_TRAIT(H, TRAIT_NONATURALHEAL, "hatred") // for heal_damage()
