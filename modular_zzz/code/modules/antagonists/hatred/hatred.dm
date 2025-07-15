@@ -82,11 +82,6 @@
 									)
 
 /datum/antagonist/hatred/greet()
-	/*
-	SEND_SOUND(owner.current, sound(pick('modular_zzz/code/modules/antagonists/hatred/hatred_begin_1.ogg', \
-										'modular_zzz/code/modules/antagonists/hatred/hatred_begin_2.ogg', \
-										'modular_zzz/code/modules/antagonists/hatred/hatred_begin_3.ogg')))
-	*/
 	playsound(owner.current, pick('modular_zzz/code/modules/antagonists/hatred/hatred_begin_1.ogg', \
 					'modular_zzz/code/modules/antagonists/hatred/hatred_begin_2.ogg', \
 					'modular_zzz/code/modules/antagonists/hatred/hatred_begin_3.ogg'), vol = 50, vary = FALSE, ignore_walls = FALSE)
@@ -141,12 +136,6 @@
 	// H.add_quirk(/datum/quirk/jumper, announce = FALSE) // ADD_TRAIT(H, TRAIT_JUMPER, "hatred")
 	H.add_quirk(/datum/quirk/tough, announce = FALSE) // ADD_TRAIT(H, TRAIT_TOUGH, "hatred")
 	H.add_quirk(/datum/quirk/freerunning, announce = FALSE) // ADD_TRAIT(H, TRAIT_FREERUNNING, "hatred")
-	// GENERAL SPEED DEBUFFS FROM QUIRKS
-	// H.add_quirk(/datum/quirk/depression, announce = FALSE)
-	// H.add_quirk(/datum/quirk/hungry, announce = FALSE)
-	// H.add_quirk(/datum/quirk/thirsty, announce = FALSE)
-	// H.add_quirk(/datum/quirk/unstable, announce = FALSE)
-	// H.add_quirk(/datum/quirk/all_nighter, announce = FALSE)
 	appear_on_station()
 	allowed_z_levels += SSmapping.levels_by_trait(ZTRAIT_CENTCOM)
 	allowed_z_levels += SSmapping.levels_by_trait(ZTRAIT_RESERVED)
@@ -158,7 +147,7 @@
 	addtimer(CALLBACK(src, PROC_REF(alarm_station)), 5 SECONDS, TIMER_DELETE_ME) // Think FAST.
 
 /datum/movespeed_modifier/hatred
-	multiplicative_slowdown = 0.3
+	multiplicative_slowdown = 0.4
 
 /datum/antagonist/hatred/proc/evaluate_security()
 	var/security_alive = length(SSjob.get_living_sec())
@@ -168,8 +157,8 @@
 	// 	if(isnull(blu.current) || blu.current.stat == DEAD)
 	// 		continue
 	// 	security_alive++
-	// if(GLOB.security_level == SEC_LEVEL_GREEN) // разбавляем эксту внутривенно (GC)
-	// 	security_alive++
+	if(SSsecurity_level.get_current_level_as_number() == SEC_LEVEL_GREEN) // (GC) - у станции нет проблем и все внимание СБ будет приковано к антагу
+		security_alive++
 	switch(security_alive)
 		// if(-INFINITY to 4)
 		// 	gear_level = 0
@@ -223,7 +212,6 @@
 /datum/antagonist/hatred/proc/appear_on_station()
 	var/list/possible_spawns = list()
 	possible_spawns += get_safe_random_station_turf(typesof(/area/station/command/gateway)) // 1/7 is ~15%
-	// possible_spawns += get_safe_random_station_turf(typesof(/area/station/command/teleporter)) // 1/7 is ~15%
 	// possible_spawns += get_safe_random_station_turf(typesof(/area/station/cargo)) // for debug at Runtime Station
 	for(var/i = 1; i <= 6; i++) // to increase chances for antag to spawn in maints.
 		possible_spawns += find_maintenance_spawn(atmos_sensitive = TRUE)
@@ -431,9 +419,10 @@
 	accepted_magazine_type = /obj/item/ammo_box/magazine/internal/shot/hatred
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	box_reload_penalty = FALSE
-	fire_delay = 5
+	fire_delay = 4
 	rack_delay = 4
 	var/mob/living/carbon/human/original_owner = null
+	var/quick_empty_flag = FALSE
 
 /obj/item/ammo_box/magazine/internal/shot/hatred
 	ammo_type = /obj/item/ammo_casing/shotgun/magnum
@@ -454,10 +443,13 @@
 		. += span_danger("You cannot make your fingers drop this weapon of Doom.")
 
 /obj/item/gun/ballistic/shotgun/riot/hatred/click_ctrl_shift(mob/user)
-	rack()
-	while(chambered)
-		stoplag(3)
+	if(!quick_empty_flag)
+		quick_empty_flag = TRUE
 		rack()
+		while(chambered)
+			stoplag(3)
+			rack()
+		quick_empty_flag = FALSE
 
 /obj/item/gun/ballistic/shotgun/riot/hatred/equipped(mob/living/user, slot)
 	. = ..()
