@@ -173,9 +173,9 @@
 	switch(security_alive)
 		// if(-INFINITY to 4)
 		// 	gear_level = 0
-		if(-INFINITY to 5) 	// 4(GC)-5
+		if(-INFINITY to 6) 	// 4(GC)-6
 			gear_level = 1
-		if(6 to INFINITY) 	// 6+
+		if(7 to INFINITY) 	// 7+
 			gear_level = 2
 
 /datum/antagonist/hatred/proc/make_authentic_body()
