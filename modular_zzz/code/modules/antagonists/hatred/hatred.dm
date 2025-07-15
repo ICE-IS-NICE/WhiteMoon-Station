@@ -938,8 +938,8 @@
 	. = FALSE
 	if(!(SSgamemode.storyteller.storyteller_type in list(STORYTELLER_TYPE_INTENSE))) // only for high dynamics
 		return
-	if(!SSdynamic.antag_events_enabled)
-		return
+	// if(!SSdynamic.antag_events_enabled) // это подсистема все равно пока что не работает, так что похуй
+	// 	return
 	if(EMERGENCY_PAST_POINT_OF_NO_RETURN)
 		return
 	if(SSsecurity_level.get_current_level_as_number() in list(SEC_LEVEL_GREEN)) // разбавляем эксту внутривенно
