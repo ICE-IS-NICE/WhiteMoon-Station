@@ -783,9 +783,10 @@
 		if("Pistols")
 			suit_store = /obj/item/storage/belt/holster/hatred
 			l_pocket = null
+			ADD_TRAIT(H, TRAIT_DOUBLE_TAP, "hatred")
 	if(Ha.gear_level == 2)
-		if(Ha.chosen_gun == "Pistols")
-			Ha.high_gear += "Shoot faster"
+		// if(Ha.chosen_gun == "Pistols")
+		// 	Ha.high_gear += "Shoot faster"
 		Ha.chosen_high_gear = tgui_input_list(H, "Выбери дополнительную экипировку и сделай это БЫСТРО!", "Выбери оружие геноцида", Ha.high_gear, Ha.high_gear[1], 10 SECONDS)
 		switch(Ha.chosen_high_gear)
 			if(null)
@@ -793,8 +794,8 @@
 				belt = /obj/item/storage/belt/military/assault/hatred
 			if("Belt of Hatred")
 				belt = /obj/item/storage/belt/military/assault/hatred
-			if("Shoot faster")
-				ADD_TRAIT(H, TRAIT_DOUBLE_TAP, "hatred")
+			// if("Shoot faster")
+			// 	ADD_TRAIT(H, TRAIT_DOUBLE_TAP, "hatred")
 
 /datum/outfit/hatred/post_equip(mob/living/carbon/human/H, visualsOnly, client/preference_source)
 	// var/obj/item/implant/explosive/E = new
