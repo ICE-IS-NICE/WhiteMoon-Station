@@ -130,6 +130,7 @@
 	ADD_TRAIT(H, TRAIT_QUICKER_CARRY, "hatred")
 	ADD_TRAIT(H, TRAIT_DRINKS_BLOOD, "hatred") // why not
 	ADD_TRAIT(H, TRAIT_NODISMEMBER, "hatred") // if a player loses his arm, he won't be able to shoot nor drop his gun. it would be unplayable.
+	ADD_TRAIT(H, TRAIT_UNCONVERTABLE, "hatred")
 	// ADD_TRAIT(H, TRAIT_NOSOFTCRIT, "hatred")
 	H.add_movespeed_mod_immunities("hatred", /datum/movespeed_modifier/damage_slowdown) // I want him to be a bit slower, but indomitable by mere pain.
 	H.add_movespeed_modifier(/datum/movespeed_modifier/hatred)
