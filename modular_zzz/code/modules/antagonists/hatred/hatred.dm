@@ -160,12 +160,12 @@
 
 /datum/antagonist/hatred/proc/evaluate_security()
 	var/security_alive = length(SSjob.get_living_sec())
-	for(var/datum/mind/blu as anything in get_crewmember_minds())
-		if(!(blu.assigned_role in list("Blueshield")))
-			continue
-		if(isnull(blu.current) || blu.current.stat == DEAD)
-			continue
-		security_alive++
+	// for(var/datum/mind/blu as anything in get_crewmember_minds())
+	// 	if(!(blu.assigned_role in list("Blueshield")))
+	// 		continue
+	// 	if(isnull(blu.current) || blu.current.stat == DEAD)
+	// 		continue
+	// 	security_alive++
 	// if(GLOB.security_level == SEC_LEVEL_GREEN) // разбавляем эксту внутривенно (GC)
 	// 	security_alive++
 	switch(security_alive)
@@ -372,7 +372,7 @@
 	// 90% = 32
 	// 85% = 30
 	// 80% = 28
-	projectile_damage_multiplier = 0.8
+	projectile_damage_multiplier = 0.85
 	var/mob/living/carbon/human/original_owner = null
 
 /obj/item/gun/ballistic/automatic/ar/ak12/hatred/Initialize(mapload)
@@ -492,7 +492,7 @@
 	// 100% = 30
 	// 90% = 27
 	// 80% = 24
-	projectile_damage_multiplier = 0.9
+	// projectile_damage_multiplier = 0.9
 	dual_wield_spread = 4
 	var/mob/living/carbon/human/original_owner = null
 
