@@ -86,7 +86,7 @@
 					'modular_zzz/code/modules/antagonists/hatred/hatred_begin_2.ogg', \
 					'modular_zzz/code/modules/antagonists/hatred/hatred_begin_3.ogg'), vol = 50, vary = FALSE, ignore_walls = FALSE)
 	var/greet_text
-	greet_text += "Ты - [span_red(span_bold("Безымянный Убийца"))]. Твое прошлое совершенно неважно, и даже если оно было, оно было незавидным.<br>"
+	greet_text += "Ты - [span_red(span_bold("Безымянный Массшутер"))]. Твое имя совершенно неважно. Твое прошлое даже если и было, оно было незавидным.<br>"
 	greet_text += "Ты испытываешь непреодолимую ненависть, отвращение и презрение ко всем окружающим.<br>"
 	greet_text += "У тебя лишь две цели: <u>убивать</u> и <u>умереть славной смертью</u>.<br>"
 	greet_text += "Твое проклятое снаряжение неразлучно с тобою и подстегивает тебя продолжать соврешать геноцид беззащитных гражданских.<br>"
@@ -858,7 +858,7 @@
 /datum/dynamic_ruleset/midround/from_ghosts/hatred
 	name = "Mass Shooter"
 	config_tag = "Mass Shooter"
-	candidate_role = "The Man of Genocide"
+	candidate_role = "Mass Shooter"
 	// preview_antag_datum = /datum/antagonist/nukeop
 	midround_type = HEAVY_MIDROUND
 	pref_flag = ROLE_LONE_OPERATIVE
@@ -945,7 +945,7 @@
 	return TRUE
 
 /datum/round_event/ghost_role/hatred/spawn_role()
-	var/mob/chosen_one = SSpolling.poll_ghost_candidates(check_jobban = ROLE_LONE_OPERATIVE, role = ROLE_LONE_OPERATIVE, alert_pic = /obj/item/gun/ballistic/automatic/ar/ak12, role_name_text = "The Man of Genocide", amount_to_pick = 1)
+	var/mob/chosen_one = SSpolling.poll_ghost_candidates(check_jobban = ROLE_LONE_OPERATIVE, role = ROLE_LONE_OPERATIVE, alert_pic = /obj/item/gun/ballistic/automatic/ar/ak12, role_name_text = "Mass Shooter", amount_to_pick = 1)
 	if(isnull(chosen_one))
 		return NOT_ENOUGH_PLAYERS
 	var/turf/entry_spawn_loc = GET_ERROR_ROOM // what a fine empty room. why don't we borrow it for a couple of seconds during preparation.
