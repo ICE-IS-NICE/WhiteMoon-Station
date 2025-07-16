@@ -90,7 +90,7 @@
 	greet_text += "Ты испытываешь непреодолимую ненависть, отвращение и презрение ко всем окружающим.<br>"
 	greet_text += "У тебя лишь две цели: <u>убивать</u> и <u>умереть славной смертью</u>.<br>"
 	greet_text += "Твое проклятое снаряжение неразлучно с тобою и подстегивает тебя продолжать соврешать геноцид беззащитных гражданских.<br>"
-	greet_text += "Твоё [span_red("Оружие Ненависти")] и неутолимая жажда убивать вознаграждают тебя, ибо завершающий выстрел в упор в голову (рот) исцеляет твои раны, нож добивает быстрее. Обычная медицина бессильна.<br>"
+	greet_text += "Твоё [span_red("Оружие Ненависти")] и неутолимая жажда убивать вознаграждают тебя, ибо завершающий выстрел в упор в голову (рот) исцеляет твои раны, нож добивает быстрее. [span_red("Обычная медицина бессильна")].<br>"
 	if(chosen_gun == "Pistols")
 		greet_text += "[span_red("Кобура Ненависти")] всегда готова предоставить тебе особое парное оружие (стрелять с двух рук - в харме). После использования можешь просто выбросить их, ибо их цель была выполнена.<br>"
 	else
@@ -147,7 +147,7 @@
 	addtimer(CALLBACK(src, PROC_REF(alarm_station)), 5 SECONDS, TIMER_DELETE_ME) // Think FAST.
 
 /datum/movespeed_modifier/hatred
-	multiplicative_slowdown = 0.3
+	multiplicative_slowdown = 0.4
 
 /datum/antagonist/hatred/proc/evaluate_security()
 	var/security_alive = length(SSjob.get_living_sec())
@@ -653,6 +653,10 @@
 	desc = "The shabby leather overcoat with decent armor paddings. Once it has been splashed with blood you can't take it off anymore."
 	armor_type = /datum/armor/hatred
 	resistance_flags = FIRE_PROOF
+	body_parts_covered = CHEST|GROIN|ARMS|LEGS // just like HOS' armored trenchcoat
+	cold_protection = CHEST|GROIN|ARMS|LEGS
+	heat_protection = CHEST|GROIN|ARMS|LEGS
+	max_heat_protection_temperature = ARMOR_MAX_TEMP_PROTECT
 
 /obj/item/clothing/suit/jacket/leather_trenchcoat/hatred/Initialize(mapload)
 	. = ..()
@@ -708,6 +712,10 @@
 	I.name = "leather overcoat of Faded Hatred"
 	I.desc = "The blood stained shabby leather overcoat with decent armor paddings. It looks less menacing than before."
 	I.resistance_flags = FIRE_PROOF
+	I.body_parts_covered = CHEST|GROIN|ARMS|LEGS
+	I.cold_protection = CHEST|GROIN|ARMS|LEGS
+	I.heat_protection = CHEST|GROIN|ARMS|LEGS
+	I.max_heat_protection_temperature = ARMOR_MAX_TEMP_PROTECT
 	I.set_armor(/datum/armor/hatred_faded)
 
 /obj/item/clothing/suit/jacket/leather_trenchcoat/hatred/dropped(mob/user)
@@ -740,13 +748,12 @@
 	uniform = /obj/item/clothing/under/syndicate/tacticool/black
 	suit = /obj/item/clothing/suit/jacket/leather_trenchcoat/hatred
 	gloves = /obj/item/clothing/gloves/tackler/combat/insulated
-	shoes = /obj/item/clothing/shoes/jackboots/knee
+	shoes = /obj/item/clothing/shoes/jackboots/knee // /obj/item/clothing/shoes/combat
 	id = /obj/item/card/id/away/old
 	l_pocket = /obj/item/storage/pouch/ammo/hatred
 	// suit_store = /obj/item/flashlight/seclite // the light doesn't work after spawn for some reason
 	belt = /obj/item/storage/belt/military/assault
-	// back = /obj/item/storage/backpack/duffelbag/syndie/nri/captain
-	back = /obj/item/storage/backpack/satchel/fireproof
+	back = /obj/item/storage/backpack/satchel/fireproof // /obj/item/storage/backpack/duffelbag/syndie/nri/captain
 	backpack_contents = list(/obj/item/storage/box/survival/engineer = 1,
 		/obj/item/knife/combat = 1,
 		/obj/item/flashlight/seclite = 1,
