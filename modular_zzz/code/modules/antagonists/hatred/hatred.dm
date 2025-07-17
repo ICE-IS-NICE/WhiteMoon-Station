@@ -144,7 +144,7 @@
 	RegisterSignals(H, COMSIG_LIVING_ADJUST_STANDARD_DAMAGE_TYPES, PROC_REF(on_try_healing)) // for AdjustXXXLoss()
 	RegisterSignal(H, COMSIG_MOB_EQUIPPED_ITEM, PROC_REF(check_knife)) // any knife we pick might be our deadliest weapon
 	RegisterSignal(H, COMSIG_MOB_TRYING_TO_FIRE_GUN, PROC_REF(check_used_gun))
-	addtimer(CALLBACK(src, PROC_REF(alarm_station)), 5 SECONDS, TIMER_DELETE_ME) // Think FAST.
+	addtimer(CALLBACK(src, PROC_REF(alarm_station)), 10 SECONDS, TIMER_DELETE_ME) // Think FAST.
 
 /datum/movespeed_modifier/hatred
 	multiplicative_slowdown = 0.4
@@ -393,6 +393,7 @@
 		var/obj/item/gun/ballistic/I = new /obj/item/gun/ballistic/automatic/ar/ak12(get_turf(src))
 		I.name = "\improper AK-12 rifle of Faded Hatred"
 		I.desc = "It looks less menacing than before. The blood stained scratches on this rifle say: \"The Genocide Machine\"."
+		I.resistance_flags = FIRE_PROOF | ACID_PROOF
 		I.burst_fire_selection = FALSE
 		I.actions_types = null
 		var/datum/action/A = locate(/datum/action/item_action/toggle_firemode) in I.actions
@@ -465,9 +466,10 @@
 		var/obj/item/gun/ballistic/I = new /obj/item/gun/ballistic/shotgun/riot(get_turf(src))
 		I.name = "\improper Riot Shotgun of Faded Hatred"
 		I.desc = "It looks less menacing than before. The blood stained scratches on this shotgun say: \"The Bringer of Doom\"."
+		I.resistance_flags = FIRE_PROOF | ACID_PROOF
 		I.box_reload_penalty = FALSE
+		I.fire_delay = 5
 		// I.rack_delay = 5
-		// I.fire_delay = 5
 		qdel(src)
 
 /obj/item/gun/ballistic/shotgun/riot/hatred/dropped(mob/user, silent)
@@ -694,8 +696,8 @@
 	energy = 30
 	bomb = 30
 	bio = 30
-	fire = 50
-	acid = 50
+	fire = 60
+	acid = 60
 	wound = WOUND_ARMOR_WEAK
 
 /obj/item/clothing/suit/jacket/leather_trenchcoat/hatred/equipped(mob/user, slot)
@@ -952,12 +954,12 @@
 	return TRUE
 
 /datum/round_event/ghost_role/hatred/spawn_role()
-	var/mob/chosen_one = SSpolling.poll_ghost_candidates(check_jobban = ROLE_LONE_OPERATIVE, role = ROLE_LONE_OPERATIVE, alert_pic = /obj/item/gun/ballistic/automatic/ar/ak12, role_name_text = "Mass Shooter", amount_to_pick = 1)
-	if(isnull(chosen_one))
-		return NOT_ENOUGH_PLAYERS
 	var/turf/entry_spawn_loc = GET_ERROR_ROOM // what a fine empty room. why don't we borrow it for a couple of seconds during preparation.
 	if(isnull(entry_spawn_loc) || isnull(find_safe_turf(extended_safety_checks = TRUE, dense_atoms = FALSE))) // we'll send him on station right away so we think ahead.
 		return MAP_ERROR
+	var/mob/chosen_one = SSpolling.poll_ghost_candidates(check_jobban = ROLE_LONE_OPERATIVE, role = ROLE_LONE_OPERATIVE, alert_pic = /obj/item/gun/ballistic/automatic/ar/ak12, role_name_text = "Mass Shooter", amount_to_pick = 1)
+	if(isnull(chosen_one))
+		return NOT_ENOUGH_PLAYERS
 	var/mob/living/carbon/human/body = new (entry_spawn_loc)
 	// body.PossessByPlayer(chosen_one.key)
 	var/datum/mind/Mind = new /datum/mind(chosen_one.key)
