@@ -936,22 +936,18 @@
 	fakeable = FALSE
 
 /datum/round_event_control/hatred/can_spawn_event(players_amt, allow_magic)
-	. = ..()
-	if(!.)
-		return
-	. = FALSE
 	if(!(SSgamemode.storyteller.storyteller_type in list(STORYTELLER_TYPE_INTENSE))) // only for high dynamics
-		return
+		return FALSE
 	// if(!SSdynamic.antag_events_enabled) // это подсистема все равно пока что не работает, так что похуй
-	// 	return
+	// 	return FALSE
 	if(EMERGENCY_PAST_POINT_OF_NO_RETURN)
-		return
+		return FALSE
 	if(SSsecurity_level.get_current_level_as_number() in list(SEC_LEVEL_GREEN)) // разбавляем эксту внутривенно
 		if(length(SSjob.get_living_sec()) < 4)
-			return
+			return FALSE
 	else if(length(SSjob.get_living_sec()) < 5) // я желаю достойного сопротивления.
-		return
-	return TRUE
+		return FALSE
+	return ..()
 
 /datum/round_event/ghost_role/hatred/spawn_role()
 	var/turf/entry_spawn_loc = GET_ERROR_ROOM // what a fine empty room. why don't we borrow it for a couple of seconds during preparation.
