@@ -54,8 +54,8 @@
 	/**
 	 * Level of available gear is determined by a number of alive security officers and blueshields.
 	 * 0 = low guns: a pistol or double barrel shotgun. NOT IMPLEMENTED YET!
-	 * 1 = default classic and serious guns: AK-12 or riot shotgun ||| можно + пистолет на выбор, который позволит добивать вдвое быстрее обычного
-	 * 2 = ROBUST gear: +armor or +cursed belt |||| +fast executions + +1 life on low gear
+	 * 1 = default classic and serious guns: AK-12 or Riot shotgun or Pistols
+	 * 2 = ROBUST gear: +armor or +cursed belt or +fast executions |||| или +1 life on low gear или выбор спавнпоинта или +скорость или адреналин имплант
 	 */
 	var/gear_level = 1
 	var/list/low_guns = list("Pistol", "Double-barreled shotgun") // NOT IMPLEMENTED YET!
@@ -162,9 +162,9 @@
 	switch(security_alive)
 		// if(-INFINITY to 4)
 		// 	gear_level = 0
-		if(-INFINITY to 6) 	// 4(GC)-6
+		if(-INFINITY to 5) 	// 4(GC)-5
 			gear_level = 1
-		if(7 to INFINITY) 	// 7+
+		if(6 to INFINITY) 	// 6+
 			gear_level = 2
 
 /datum/antagonist/hatred/proc/make_authentic_body()
@@ -239,7 +239,7 @@
 		priority_announce("На ваш объект ворвался особо опасный вооруженный преступник с целью массового убийства гражданских лиц. \
 							Нейтрализуйте угрозу любыми доступными средствами. \
 							ЦК санкционирует всему персоналу станции против данной цели: использование летального вооружения, открытие огня без предупреждения и казнь на месте. \
-							Особые приметы: мужчина в длинном черном кожаном пальто с длинными черными волосами и [chosen_gun].", \
+							Особые приметы: мужчина спортивного телосложения в длинном черном кожаном пальто с длинными черными волосами и [chosen_gun].", \
 							"ALERT: MASS SHOOTER!", chosen_sound, has_important_message = TRUE)
 
 /// we check if we picked up a knife in our hand. if so, we listen to it when it strikes its target.
@@ -350,7 +350,7 @@
 /// THE GUN OF HATRED ///
 
 /obj/item/gun/ballistic/automatic/ar/ak12/hatred
-	name = "\improper AK-12 rifle of Hatred"
+	name = "\proper AK-12 rifle of Hatred"
 	desc = "The scratches on this rifle say: \"The Genocide Machine\"."
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	burst_fire_selection = FALSE
@@ -391,7 +391,7 @@
 	SIGNAL_HANDLER
 	if(!QDELETED(src))
 		var/obj/item/gun/ballistic/I = new /obj/item/gun/ballistic/automatic/ar/ak12(get_turf(src))
-		I.name = "\improper AK-12 rifle of Faded Hatred"
+		I.name = "\proper AK-12 rifle of Faded Hatred"
 		I.desc = "It looks less menacing than before. The blood stained scratches on this rifle say: \"The Genocide Machine\"."
 		I.resistance_flags = FIRE_PROOF | ACID_PROOF
 		I.burst_fire_selection = FALSE
@@ -415,7 +415,7 @@
 /// THE SHOTGUN OF HATRED ///
 
 /obj/item/gun/ballistic/shotgun/riot/hatred
-	name = "\improper Riot Shotgun of Hatred"
+	name = "\proper Riot Shotgun of Hatred"
 	desc = "The scratches on this shotgun say: \"The Bringer of Doom\"."
 	accepted_magazine_type = /obj/item/ammo_box/magazine/internal/shot/hatred
 	resistance_flags = FIRE_PROOF | ACID_PROOF
@@ -464,7 +464,7 @@
 	SIGNAL_HANDLER
 	if(!QDELETED(src))
 		var/obj/item/gun/ballistic/I = new /obj/item/gun/ballistic/shotgun/riot(get_turf(src))
-		I.name = "\improper Riot Shotgun of Faded Hatred"
+		I.name = "\proper Riot Shotgun of Faded Hatred"
 		I.desc = "It looks less menacing than before. The blood stained scratches on this shotgun say: \"The Bringer of Doom\"."
 		I.resistance_flags = FIRE_PROOF | ACID_PROOF
 		I.box_reload_penalty = FALSE
@@ -482,7 +482,7 @@
 
 /obj/item/gun/ballistic/automatic/pistol/m1911/hatred
 	// spawn_magazine_type = /obj/item/ammo_box/magazine/m45/ap
-	name = "\improper M1911 of Hatred"
+	name = "\proper M1911 of Hatred"
 	desc = "The scratches on this pistol say: \"The Executioner\"."
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	// 100% = 30
@@ -532,7 +532,7 @@
 /// THE HOLSTER OF HATRED ///
 
 /obj/item/storage/belt/holster/hatred
-	name = "\improper Holster of Hatred"
+	name = "\proper Holster of Hatred"
 	desc = "The cursed holster is always ready to supply you with new tools of Genocide."
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 
@@ -568,7 +568,7 @@
 /// THE POUCH OF HATRED ///
 
 /obj/item/storage/pouch/ammo/hatred
-	name = "\improper Ammo pouch of Hatred"
+	name = "\proper Ammo pouch of Hatred"
 	desc = "The cursed pouch with infinite bullets encourage you to relentlessly continue your atrocities against humanity. What a miracle and delight for your Genocide Machines."
 	unique_reskin = null
 	resistance_flags = FIRE_PROOF | ACID_PROOF
@@ -611,7 +611,7 @@
 /// THE BELT OF HATRED ///
 
 /obj/item/storage/belt/military/assault/hatred
-	name = "\improper Belt of Hatred"
+	name = "\proper Belt of Hatred"
 	desc = "The cursed belt eagerly devours hearts of your victims and supplies you with new deadly explosives."
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	var/glory_points = 0
@@ -651,7 +651,7 @@
 /// THE OVERCOAT OF HATRED ///
 
 /obj/item/clothing/suit/jacket/leather_trenchcoat/hatred
-	name = "leather overcoat of Hatred"
+	name = "\proper Leather overcoat of Hatred"
 	desc = "The shabby leather overcoat with decent armor paddings. Once it has been splashed with blood you can't take it off anymore."
 	armor_type = /datum/armor/hatred
 	resistance_flags = FIRE_PROOF
@@ -711,7 +711,7 @@
 /obj/item/clothing/suit/jacket/leather_trenchcoat/hatred/proc/on_hatred_death()
 	SIGNAL_HANDLER
 	var/obj/item/clothing/I = new /obj/item/clothing/suit/jacket/leather_trenchcoat(get_turf(src))
-	I.name = "leather overcoat of Faded Hatred"
+	I.name = "\proper Leather overcoat of Faded Hatred"
 	I.desc = "The blood stained shabby leather overcoat with decent armor paddings. It looks less menacing than before."
 	I.resistance_flags = FIRE_PROOF
 	I.body_parts_covered = CHEST|GROIN|ARMS|LEGS
@@ -726,7 +726,7 @@
 		REMOVE_TRAIT(src, TRAIT_NODROP, "hatred")
 
 /obj/item/clothing/head/invisihat/hatred
-	name = "Veil of Hatred"
+	name = "\proper Veil of Hatred"
 	desc = "Once you felt <b><i>that</i></b> urge to commit relentless genocide of civilians, you clearly understood you were cursed... blessed... and... protected by invisible spirit of Hatred."
 	armor_type = /datum/armor/hatred
 	resistance_flags = FIRE_PROOF
