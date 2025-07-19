@@ -283,7 +283,7 @@
 	else if(next_speech_time <= world.time)
 		playsound(owner.current, pick(killing_speech), vol = 50, vary = FALSE, ignore_walls = FALSE)
 		next_speech_time = world.time + 10 SECONDS
-	var/time_to_kill = chosen_high_gear == "Faster executions" ? 5 SECONDS : 7 SECONDS
+	var/time_to_kill = chosen_high_gear == "Faster executions" ? 4 SECONDS : 6 SECONDS
 	if(do_after(killer, time_to_kill, target))
 		target.visible_message(span_warning("[killer] slits [target]'s throat!"), span_userdanger("[killer] slits your throat!"))
 		SET_ATTACK_FORCE(attack_modifiers, 200)
@@ -324,7 +324,7 @@
 	else if(Ha.next_speech_time <= world.time)
 		playsound(user, pick(Ha.killing_speech), vol = 50, vary = FALSE, ignore_walls = FALSE)
 		Ha.next_speech_time = world.time + 10 SECONDS
-	var/new_ttk = Ha.chosen_high_gear == "Faster executions" ? 7 SECONDS : 9 SECONDS
+	var/new_ttk = Ha.chosen_high_gear == "Faster executions" ? 6 SECONDS : 8 SECONDS
 	. = ..(user, target, params, bypass_timer, time_to_kill = new_ttk)
 	if(!. || user == target || !is_glory)
 		return
