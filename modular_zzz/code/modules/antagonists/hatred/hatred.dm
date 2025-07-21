@@ -934,8 +934,10 @@
 	fakeable = FALSE
 
 /datum/round_event_control/hatred/can_spawn_event(players_amt, allow_magic)
-	if(!(SSgamemode.storyteller.storyteller_type in list(STORYTELLER_TYPE_INTENSE))) // only for high dynamics
+	if(!istype(SSgamemode.storyteller, /datum/storyteller/high)) // only for high dynamics
 		return FALSE
+	// if(!(SSgamemode.storyteller.storyteller_type in list(STORYTELLER_TYPE_INTENSE))) // only for high dynamics
+	// 	return FALSE
 	// if(!SSdynamic.antag_events_enabled) // это подсистема все равно пока что не работает, так что похуй
 	// 	return FALSE
 	if(EMERGENCY_PAST_POINT_OF_NO_RETURN)
