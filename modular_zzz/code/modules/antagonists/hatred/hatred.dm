@@ -940,8 +940,8 @@
 	// 	return FALSE
 	// if(!SSdynamic.antag_events_enabled) // это подсистема все равно пока что не работает, так что похуй
 	// 	return FALSE
-	if(EMERGENCY_PAST_POINT_OF_NO_RETURN)
-		return FALSE
+	// if(EMERGENCY_PAST_POINT_OF_NO_RETURN)
+	// 	return FALSE
 	if(SSsecurity_level.get_current_level_as_number() in list(SEC_LEVEL_GREEN)) // разбавляем эксту внутривенно
 		if(length(SSjob.get_living_sec()) < 4)
 			return FALSE
