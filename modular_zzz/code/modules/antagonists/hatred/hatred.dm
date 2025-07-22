@@ -82,9 +82,6 @@
 									)
 
 /datum/antagonist/hatred/greet()
-	playsound(owner.current, pick('modular_zzz/code/modules/antagonists/hatred/hatred_begin_1.ogg', \
-					'modular_zzz/code/modules/antagonists/hatred/hatred_begin_2.ogg', \
-					'modular_zzz/code/modules/antagonists/hatred/hatred_begin_3.ogg'), vol = 50, vary = FALSE, ignore_walls = FALSE)
 	var/greet_text
 	greet_text += "Ты - [span_red(span_bold("Безымянный Массшутер"))]. Твое имя совершенно неважно. Твое прошлое даже если и было, оно было незавидным.<br>"
 	greet_text += "Ты испытываешь непреодолимую ненависть, отвращение и презрение ко всем окружающим.<br>"
@@ -111,7 +108,6 @@
 	H.Immobilize(INFINITY, TRUE) // we don't want the player to walk around in temorary debug room during equipment selection.
 	// H.Paralyze(INFINITY, TRUE)
 	H.equipOutfit(/datum/outfit/hatred)
-	H.SetImmobilized(0, TRUE)
 	// H.SetParalyzed(0, TRUE)
 	. = ..()
 	// TRAIT_NICE_SHOT TRAIT_DOUBLE_TAP TRAIT_ANALGESIA
@@ -136,6 +132,10 @@
 	// H.add_quirk(/datum/quirk/jumper, announce = FALSE) // ADD_TRAIT(H, TRAIT_JUMPER, "hatred")
 	H.add_quirk(/datum/quirk/tough, announce = FALSE) // ADD_TRAIT(H, TRAIT_TOUGH, "hatred")
 	H.add_quirk(/datum/quirk/freerunning, announce = FALSE) // ADD_TRAIT(H, TRAIT_FREERUNNING, "hatred")
+	tgui_alert(H, "У тебя есть последняя минута, чтобы собраться с мыслями...", "Ты готов убивать?", list("Я готов убивать."), timeout = 1 MINUTES, autofocus = FALSE)
+	// WE ARE READY.
+	H.SetImmobilized(0, TRUE)
+	H.fully_heal() // in case of some accidents in spawn room during preparation
 	appear_on_station()
 	allowed_z_levels += SSmapping.levels_by_trait(ZTRAIT_CENTCOM)
 	allowed_z_levels += SSmapping.levels_by_trait(ZTRAIT_RESERVED)
@@ -144,6 +144,9 @@
 	RegisterSignals(H, COMSIG_LIVING_ADJUST_STANDARD_DAMAGE_TYPES, PROC_REF(on_try_healing)) // for AdjustXXXLoss()
 	RegisterSignal(H, COMSIG_MOB_EQUIPPED_ITEM, PROC_REF(check_knife)) // any knife we pick might be our deadliest weapon
 	RegisterSignal(H, COMSIG_MOB_TRYING_TO_FIRE_GUN, PROC_REF(check_used_gun))
+	playsound(owner.current, pick('modular_zzz/code/modules/antagonists/hatred/hatred_begin_1.ogg', \
+								'modular_zzz/code/modules/antagonists/hatred/hatred_begin_2.ogg', \
+								'modular_zzz/code/modules/antagonists/hatred/hatred_begin_3.ogg'), vol = 50, vary = FALSE, ignore_walls = FALSE)
 	addtimer(CALLBACK(src, PROC_REF(alarm_station)), 10 SECONDS, TIMER_DELETE_ME) // Think FAST.
 
 /datum/movespeed_modifier/hatred
@@ -908,6 +911,7 @@
 	// var/turf/entry_spawn_loc
 	// /area/awaymission/errorroom
 	var/mob/living/carbon/human/body = new (GET_ERROR_ROOM) // what a fine empty room. why don't we borrow it for a couple of seconds during preparation.
+	// body.move_to_error_room()
 	candidate.transfer_to(body, force_key_move = TRUE)
 	body.dna.remove_all_mutations()
 	body.dna.update_dna_identity()
@@ -963,6 +967,7 @@
 	if(isnull(chosen_one))
 		return NOT_ENOUGH_PLAYERS
 	var/mob/living/carbon/human/body = new (entry_spawn_loc)
+	// body.move_to_error_room()
 	// body.PossessByPlayer(chosen_one.key)
 	var/datum/mind/Mind = new /datum/mind(chosen_one.key)
 	Mind.active = TRUE
