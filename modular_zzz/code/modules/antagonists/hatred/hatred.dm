@@ -239,7 +239,7 @@
 		priority_announce("На ваш объект ворвался особо опасный вооруженный преступник с целью массового убийства гражданских лиц. \
 							Нейтрализуйте угрозу любыми доступными средствами. \
 							ЦК санкционирует всему персоналу станции против данной цели: использование летального вооружения, открытие огня без предупреждения и казнь на месте. \
-							Особые приметы: мужчина спортивного телосложения в длинном черном кожаном пальто с длинными черными волосами и [chosen_gun].", \
+							\n\nОсобые приметы: мужчина спортивного телосложения в длинном черном кожаном пальто с длинными черными волосами и [chosen_gun].", \
 							"ALERT: MASS SHOOTER!", chosen_sound, has_important_message = TRUE)
 
 /// we check if we picked up a knife in our hand. if so, we listen to it when it strikes its target.
@@ -631,10 +631,14 @@
 	if(istype(AM, /obj/item/organ/heart) && glory_points)
 		glory_points--
 		qdel(AM)
-		if(prob(50))
-			new /obj/item/grenade/syndieminibomb/concussion(src)
-		else
-			new /obj/item/grenade/frag(src)
+		switch(rand(1,3))
+			if(1)
+				new /obj/item/grenade/syndieminibomb/concussion(src)
+			if(2)
+				new /obj/item/grenade/frag(src)
+			if(3)
+				var/obj/item/reagent_containers/cup/glass/bottle/molotov/mol = new /obj/item/reagent_containers/cup/glass/bottle/molotov(src)
+				mol.reagents.add_reagent(/datum/reagent/consumable/ethanol/vodka, 100)
 		atom_storage.refresh_views()
 		update_appearance()
 
@@ -760,7 +764,8 @@
 		/obj/item/knife/combat = 1,
 		/obj/item/flashlight/seclite = 1,
 		// /obj/item/sensor_device = 1,
-		/obj/item/crowbar = 1
+		/obj/item/crowbar = 1,
+		/obj/item/lighter/skull = 1
 		)
 	// r_hand = /obj/item/gun/ballistic/automatic/ar/ak12/hatred
 	implants = list(/obj/item/implant/explosive)
@@ -824,7 +829,8 @@
 	var/obj/item/storage/belt/B = H.get_item_by_slot(ITEM_SLOT_BELT)
 	new /obj/item/grenade/syndieminibomb/concussion(B)
 	new /obj/item/grenade/frag(B)
-	// new /obj/item/grenade/frag(B)
+	var/obj/item/reagent_containers/cup/glass/bottle/molotov/mol = new /obj/item/reagent_containers/cup/glass/bottle/molotov(B)
+	mol.reagents.add_reagent(/datum/reagent/consumable/ethanol/vodka, 100)
 
 	var/obj/item/storage/pouch/ammo/hatred/P = H.get_item_by_slot(ITEM_SLOT_LPOCKET)
 	var/datum/antagonist/hatred/Ha = H.mind?.has_antag_datum(/datum/antagonist/hatred)
