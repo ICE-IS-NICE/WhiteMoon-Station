@@ -365,7 +365,7 @@
 	// 90% = 32
 	// 85% = 30
 	// 80% = 28
-	projectile_damage_multiplier = 0.85
+	projectile_damage_multiplier = 0.8
 	var/mob/living/carbon/human/original_owner = null
 
 /obj/item/gun/ballistic/automatic/ar/ak12/hatred/Initialize(mapload)
@@ -683,16 +683,16 @@
 	acid = 70
 	wound = WOUND_ARMOR_STANDARD
 
-// level 2 gear upgrade. +20
+// level 2 gear upgrade. +10
 /datum/armor/hatred_more
-	melee = 60
-	bullet = 60
-	laser = 60
-	energy = 60
-	bomb = 60
-	bio = 60
-	fire = 90
-	acid = 90
+	melee = 50
+	bullet = 50
+	laser = 50
+	energy = 50
+	bomb = 50
+	bio = 50
+	fire = 80
+	acid = 80
 	wound = WOUND_ARMOR_HIGH
 
 // trophy
