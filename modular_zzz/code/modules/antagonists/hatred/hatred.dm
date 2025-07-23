@@ -59,7 +59,7 @@
 	 */
 	var/gear_level = 1
 	var/list/low_guns = list("Pistol", "Double-barreled shotgun") // NOT IMPLEMENTED YET!
-	var/list/classic_guns = list("AK12","Riot Shotgun", "Pistols")
+	var/list/classic_guns = list("AK12", "Riot Shotgun", "Pistols")
 	// there won't be special level 2 guns, because I don't want antag to have cheat guns. Level 2 gear is always better stats/traits for level 1 gear.
 	var/list/high_gear = list("Belt of Hatred", "More armor", "Faster executions")
 	var/chosen_gun = null
@@ -80,6 +80,11 @@
 									'modular_zzz/code/modules/antagonists/hatred/killing_speech/hatred_speech_13.ogg',
 									'modular_zzz/code/modules/antagonists/hatred/killing_speech/hatred_speech_14.ogg'
 									)
+	var/list/allowed_guns = list(	/obj/item/gun/ballistic/automatic/ar/ak12/hatred,
+									/obj/item/gun/ballistic/shotgun/riot/hatred,
+									/obj/item/gun/ballistic/automatic/pistol/m1911/hatred,
+									/obj/item/gun/ballistic/shotgun/doublebarrel/hatred_sawn_off
+									)
 
 /datum/antagonist/hatred/greet()
 	var/greet_text
@@ -92,6 +97,8 @@
 		greet_text += "[span_red("Кобура Ненависти")] всегда готова предоставить тебе особое парное оружие (стрелять с двух рук - в харме). После использования можешь просто выбросить их, ибо их цель была выполнена.<br>"
 	else
 		greet_text += "[span_red("Cумка для патронов")] сама пополняет пустые магазины/картриджи/клипсы. Никогда не выбрасывай их!<br>"
+	if(chosen_gun == "Riot Shotgun")
+		greet_text += "В твоей кобуре спрятан [span_red("запасной дробовик")], чтобы у тебя всегда под рукой был План Б и ситуативная аммуниция.<br>"
 	if(chosen_high_gear == "Belt of Hatred")
 		greet_text += "[span_red("Пояс с гранатами")] пожирает сердца твоих жертв и вознаграждает тебя новой взрывоопасной аммуницией.<br>"
 	greet_text += "[span_red(span_bold("Убивай и будь убит!"))] Ибо никто сегодня не защищен от твоей Ненависти.<br>"
@@ -299,7 +306,7 @@
 
 /datum/antagonist/hatred/proc/check_used_gun(mob/living/carbon/human/H, obj/item/gun/G, target, flag, params)
 	SIGNAL_HANDLER
-	if(istype(G, /obj/item/gun/ballistic/automatic/ar/ak12/hatred) || istype(G, /obj/item/gun/ballistic/shotgun/riot/hatred) || istype(G, /obj/item/gun/ballistic/automatic/pistol/m1911/hatred))
+	if(is_type_in_list(G, allowed_guns))
 		return
 	else
 		to_chat(H, span_userdanger("You have no need for this. You have your own killing machines."))
@@ -480,6 +487,45 @@
 	if(!QDELETED(src))
 		if(user == original_owner) // lost arm
 			REMOVE_TRAIT(src, TRAIT_NODROP, "hatred")
+
+/// THE PLAN B ///
+
+/obj/item/gun/ballistic/shotgun/doublebarrel/hatred_sawn_off
+	name = "sawn-off double-barreled shotgun"
+	desc = "The scratches on this shotgun say: \"Plan B\"."
+	resistance_flags = FIRE_PROOF | ACID_PROOF
+	box_reload_penalty = FALSE
+	spread = -100 // will become 0 during math things. we do it to reduce sawn_off spread.
+	accepted_magazine_type = /obj/item/ammo_box/magazine/internal/shot/dual/slugs
+	// copy-paste from proc/sawoff() since we don't have existing solutions.
+	sawn_off = TRUE
+	w_class = WEIGHT_CLASS_NORMAL
+	weapon_weight = WEAPON_MEDIUM
+	lefthand_file = 'icons/mob/inhands/weapons/guns_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/weapons/guns_righthand.dmi'
+	inhand_x_dimension = 32
+	inhand_y_dimension = 32
+	inhand_icon_state = "gun"
+	worn_icon_state = "gun"
+	slot_flags = ITEM_SLOT_BELT
+	recoil = SAWN_OFF_RECOIL
+
+/obj/item/gun/ballistic/shotgun/doublebarrel/hatred_sawn_off/Initialize(mapload)
+	. = ..()
+	update_appearance()
+
+/obj/item/storage/belt/holster/hatred_sawn_off
+	name = "\proper The \"Plan B\" Holster"
+	resistance_flags = FIRE_PROOF | ACID_PROOF
+
+/obj/item/storage/belt/holster/hatred_sawn_off/Initialize(mapload)
+	. = ..()
+	atom_storage.max_total_storage = INFINITY // only for weight calculations. it still has type and slots limits
+	atom_storage.numerical_stacking = FALSE
+	atom_storage.max_slots = 1
+	atom_storage.quickdraw = TRUE
+	atom_storage.set_holdable(list(/obj/item/gun/ballistic/shotgun/doublebarrel/hatred_sawn_off), list(), list(/obj/item/gun/ballistic/shotgun/doublebarrel/hatred_sawn_off))
+	new /obj/item/gun/ballistic/shotgun/doublebarrel/hatred_sawn_off(src)
 
 /// THE PISTOL OF HATRED ///
 
@@ -669,7 +715,7 @@
 
 /obj/item/clothing/suit/jacket/leather_trenchcoat/hatred/Initialize(mapload)
 	. = ..()
-	allowed += /obj/item/storage/belt/holster/hatred
+	allowed += list(/obj/item/storage/belt/holster)
 
 // clueless armor stats.
 /datum/armor/hatred
@@ -789,6 +835,7 @@
 			r_hand = /obj/item/gun/ballistic/automatic/ar/ak12/hatred
 		if("Riot Shotgun")
 			r_hand = /obj/item/gun/ballistic/shotgun/riot/hatred
+			suit_store = /obj/item/storage/belt/holster/hatred_sawn_off
 		if("Pistols")
 			suit_store = /obj/item/storage/belt/holster/hatred
 			l_pocket = null
