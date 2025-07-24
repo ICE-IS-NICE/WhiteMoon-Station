@@ -139,6 +139,7 @@
 	// H.add_quirk(/datum/quirk/jumper, announce = FALSE) // ADD_TRAIT(H, TRAIT_JUMPER, "hatred")
 	H.add_quirk(/datum/quirk/tough, announce = FALSE) // ADD_TRAIT(H, TRAIT_TOUGH, "hatred")
 	H.add_quirk(/datum/quirk/freerunning, announce = FALSE) // ADD_TRAIT(H, TRAIT_FREERUNNING, "hatred")
+	H.add_quirk(/datum/quirk/monochromatic, announce = FALSE)
 	tgui_alert(H, "У тебя есть последняя минута, чтобы собраться с мыслями...", "Ты готов убивать?", list("Я готов убивать."), timeout = 1 MINUTES, autofocus = FALSE)
 	// WE ARE READY.
 	H.SetImmobilized(0, TRUE)
