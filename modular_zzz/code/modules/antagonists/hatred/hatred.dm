@@ -98,7 +98,7 @@
 	else
 		greet_text += "[span_red("Cумка для патронов")] сама пополняет пустые магазины/картриджи/клипсы. Никогда не выбрасывай их!<br>"
 	if(chosen_gun == "Riot Shotgun")
-		greet_text += "В твоей кобуре спрятан [span_red("запасной дробовик")], чтобы у тебя всегда под рукой был План Б и ситуативная аммуниция.<br>"
+		greet_text += "В твоей кобуре спрятан [span_red("запасной дробовик")], чтобы у тебя всегда под рукой был План Б.<br>"
 	if(chosen_high_gear == "Belt of Hatred")
 		greet_text += "[span_red("Пояс с гранатами")] пожирает сердца твоих жертв и вознаграждает тебя новой взрывоопасной аммуницией.<br>"
 	greet_text += "[span_red(span_bold("Убивай и будь убит!"))] Ибо никто сегодня не защищен от твоей Ненависти.<br>"
@@ -152,10 +152,10 @@
 	RegisterSignals(H, COMSIG_LIVING_ADJUST_STANDARD_DAMAGE_TYPES, PROC_REF(on_try_healing)) // for AdjustXXXLoss()
 	RegisterSignal(H, COMSIG_MOB_EQUIPPED_ITEM, PROC_REF(check_knife)) // any knife we pick might be our deadliest weapon
 	RegisterSignal(H, COMSIG_MOB_TRYING_TO_FIRE_GUN, PROC_REF(check_used_gun))
-	playsound(owner.current, pick('modular_zzz/code/modules/antagonists/hatred/hatred_begin_1.ogg', \
-								'modular_zzz/code/modules/antagonists/hatred/hatred_begin_2.ogg', \
-								'modular_zzz/code/modules/antagonists/hatred/hatred_begin_3.ogg'), vol = 50, vary = FALSE, ignore_walls = FALSE)
-	addtimer(CALLBACK(src, PROC_REF(alarm_station)), 10 SECONDS, TIMER_DELETE_ME) // Think FAST.
+	playsound(H, pick('modular_zzz/code/modules/antagonists/hatred/hatred_begin_1.ogg', \
+						'modular_zzz/code/modules/antagonists/hatred/hatred_begin_2.ogg', \
+						'modular_zzz/code/modules/antagonists/hatred/hatred_begin_3.ogg'), vol = 50, vary = FALSE, ignore_walls = FALSE)
+	addtimer(CALLBACK(src, PROC_REF(alarm_station)), 5 SECONDS, TIMER_DELETE_ME) // Think FAST.
 
 /datum/movespeed_modifier/hatred
 	multiplicative_slowdown = 0.3
@@ -492,8 +492,8 @@
 /// THE PLAN B ///
 
 /obj/item/gun/ballistic/shotgun/doublebarrel/hatred_sawn_off
-	name = "sawn-off double-barreled shotgun"
-	desc = "The scratches on this shotgun say: \"Plan B\"."
+	name = "\proper The \"Plan B\""
+	desc = "The scratches on this sawn-off double-barreled shotgun say: \"Plan B\"."
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	box_reload_penalty = FALSE
 	spread = -100 // will become 0 during math things. we do it to reduce sawn_off spread.
