@@ -155,7 +155,7 @@
 	playsound(H, pick('modular_zzz/code/modules/antagonists/hatred/hatred_begin_1.ogg', \
 						'modular_zzz/code/modules/antagonists/hatred/hatred_begin_2.ogg', \
 						'modular_zzz/code/modules/antagonists/hatred/hatred_begin_3.ogg'), vol = 50, vary = FALSE, ignore_walls = FALSE)
-	addtimer(CALLBACK(src, PROC_REF(alarm_station)), 5 SECONDS, TIMER_DELETE_ME) // Think FAST.
+	addtimer(CALLBACK(src, PROC_REF(alarm_station)), 10 SECONDS, TIMER_DELETE_ME) // Think FAST.
 
 /datum/movespeed_modifier/hatred
 	multiplicative_slowdown = 0.3
