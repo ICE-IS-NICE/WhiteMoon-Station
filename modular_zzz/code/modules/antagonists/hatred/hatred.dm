@@ -454,6 +454,11 @@
 	if(HAS_TRAIT(src, TRAIT_NODROP))
 		. += span_danger("You cannot make your fingers drop this weapon of Doom.")
 
+// говно с оффов не обрабатывает обновление счетчика патронов при перезарядке
+/obj/item/gun/ballistic/shotgun/riot/hatred/load_gun(obj/item/ammo, mob/living/user)
+	. = ..()
+	SEND_SIGNAL(src, COMSIG_UPDATE_AMMO_HUD)
+
 /obj/item/gun/ballistic/shotgun/riot/hatred/click_ctrl_shift(mob/user)
 	if(!quick_empty_flag)
 		quick_empty_flag = TRUE
