@@ -158,7 +158,7 @@
 	addtimer(CALLBACK(src, PROC_REF(alarm_station)), 10 SECONDS, TIMER_DELETE_ME) // Think FAST.
 
 /datum/movespeed_modifier/hatred
-	multiplicative_slowdown = 0.35
+	multiplicative_slowdown = 0.4
 
 /datum/antagonist/hatred/proc/evaluate_security()
 	var/security_alive = length(SSjob.get_living_sec())
@@ -175,7 +175,7 @@
 		// 	gear_level = 0
 		if(-INFINITY to 5) 	// 4(GC)-5
 			gear_level = 1
-		if(6 to INFINITY) 	// 6+
+		if(7 to INFINITY) 	// 7+
 			gear_level = 2
 
 /datum/antagonist/hatred/proc/make_authentic_body()
