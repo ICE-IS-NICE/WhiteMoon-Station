@@ -301,7 +301,12 @@
 		if(is_glory)
 			// wait for the knife to do its job.
 			addtimer(CALLBACK(knife, TYPE_PROC_REF(/obj/item/knife, check_glory_kill), killer, target), 1 SECONDS, TIMER_DELETE_ME)
-		knife.attack(target, killer, modifiers, attack_modifiers)
+		// knife.attack(target, killer, modifiers, attack_modifiers)
+		while(target.stat != DEAD && killer.CanReach(target, knife))
+			if(!knife.melee_attack_chain(killer, target, modifiers, attack_modifiers))
+				break
+			if(!do_after(killer, 0.5 SECONDS, target))
+				break
 	else
 		target.visible_message(span_notice("[killer] stopped his knife."), span_notice("[killer] stopped his knife!"))
 
