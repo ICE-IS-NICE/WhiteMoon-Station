@@ -297,15 +297,16 @@
 	var/time_to_kill = chosen_high_gear == "Faster executions" ? 4 SECONDS : 6 SECONDS
 	if(do_after(killer, time_to_kill, target))
 		target.visible_message(span_warning("[killer] slits [target]'s throat!"), span_userdanger("[killer] slits your throat!"))
-		SET_ATTACK_FORCE(attack_modifiers, 200)
 		if(is_glory)
 			// wait for the knife to do its job.
 			addtimer(CALLBACK(knife, TYPE_PROC_REF(/obj/item/knife, check_glory_kill), killer, target), 1 SECONDS, TIMER_DELETE_ME)
+		SET_ATTACK_FORCE(attack_modifiers, 200)
 		// knife.attack(target, killer, modifiers, attack_modifiers)
+		knife.melee_attack_chain(killer, target, modifiers, attack_modifiers)
 		while(target.stat != DEAD && killer.CanReach(target, knife))
-			if(!knife.melee_attack_chain(killer, target, modifiers, attack_modifiers))
-				break
 			if(!do_after(killer, 0.5 SECONDS, target))
+				break
+			if(!knife.melee_attack_chain(killer, target, modifiers, attack_modifiers))
 				break
 	else
 		target.visible_message(span_notice("[killer] stopped his knife."), span_notice("[killer] stopped his knife!"))
