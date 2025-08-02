@@ -240,7 +240,7 @@
 
 /datum/antagonist/hatred/proc/on_try_healing(mob/current_mob, type, amount, forced)
 	SIGNAL_HANDLER
-	if(amount < 0 && !forced)
+	if((type != OXY) && (amount < 0) && !forced)
 		return COMPONENT_IGNORE_CHANGE
 	return NONE
 
