@@ -161,16 +161,18 @@
 	multiplicative_slowdown = 0.45
 
 /datum/antagonist/hatred/proc/evaluate_security()
-	var/security_alive = length(SSjob.get_living_sec())
+	var/gear_points = length(SSjob.get_living_sec())
 	// for(var/datum/mind/blu as anything in get_crewmember_minds())
 	// 	if(!(blu.assigned_role in list("Blueshield")))
 	// 		continue
 	// 	if(isnull(blu.current) || blu.current.stat == DEAD)
 	// 		continue
-	// 	security_alive++
+	// 	gear_points++
 	if(SSsecurity_level.get_current_level_as_number() == SEC_LEVEL_GREEN) // (GC) - у станции нет проблем и все внимание СБ будет приковано к антагу
-		security_alive++
-	switch(security_alive)
+		gear_points++
+	if(length(active_ais(check_mind = TRUE, skip_syndicate = TRUE))) // вертолеты
+		gear_points++
+	switch(gear_points)
 		// if(-INFINITY to 4)
 		// 	gear_level = 0
 		if(-INFINITY to 5) 	// 4(GC)-5
@@ -297,9 +299,6 @@
 	var/time_to_kill = chosen_high_gear == "Faster executions" ? 4 SECONDS : 6 SECONDS
 	if(do_after(killer, time_to_kill, target))
 		target.visible_message(span_warning("[killer] slits [target]'s throat!"), span_userdanger("[killer] slits your throat!"))
-		if(is_glory)
-			// wait for the knife to do its job.
-			addtimer(CALLBACK(knife, TYPE_PROC_REF(/obj/item/knife, check_glory_kill), killer, target), 1 SECONDS, TIMER_DELETE_ME)
 		SET_ATTACK_FORCE(attack_modifiers, 200)
 		// knife.attack(target, killer, modifiers, attack_modifiers)
 		knife.melee_attack_chain(killer, target, modifiers, attack_modifiers)
@@ -308,6 +307,9 @@
 				break
 			if(!knife.melee_attack_chain(killer, target, modifiers, attack_modifiers))
 				break
+		if(is_glory)
+			// wait for the knife to do its job.
+			addtimer(CALLBACK(knife, TYPE_PROC_REF(/obj/item/knife, check_glory_kill), killer, target), 1 SECONDS, TIMER_DELETE_ME)
 	else
 		target.visible_message(span_notice("[killer] stopped his knife."), span_notice("[killer] stopped his knife!"))
 
