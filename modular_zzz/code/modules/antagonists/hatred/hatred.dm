@@ -61,7 +61,7 @@
 	// var/list/low_guns = list("Pistol", "Double-barreled shotgun") // NOT IMPLEMENTED YET!
 	var/list/classic_guns = list("AK12", "Riot Shotgun", "Pistols")
 	// there won't be special level 2 guns, because I don't want antag to have cheat guns. Level 2 gear is always better stats/traits for level 1 gear.
-	var/list/high_gear = list("Belt of Hatred", "More armor", "Faster executions")
+	var/list/high_gear = list(/*"Belt of Hatred", */"More armor", "Faster executions")
 	var/chosen_gun = null
 	var/chosen_high_gear = null
 	var/next_speech_time = 0
@@ -99,7 +99,8 @@
 		greet_text += "[span_red("Cумка для патронов")] сама пополняет пустые магазины/картриджи/клипсы. Никогда не выбрасывай их!<br>"
 	if(chosen_gun == "Riot Shotgun")
 		greet_text += "В твоей кобуре спрятан [span_red("запасной дробовик")], чтобы у тебя всегда под рукой был План Б.<br>"
-	if(chosen_high_gear == "Belt of Hatred")
+	// if(chosen_high_gear == "Belt of Hatred")
+	if(!isnull(chosen_high_gear))
 		greet_text += "[span_red("Пояс с гранатами")] пожирает сердца твоих жертв после их добивания и вознаграждает тебя новой взрывоопасной аммуницией.<br>"
 	greet_text += "[span_red(span_bold("Убивай и будь убит!"))] Ибо никто сегодня не защищен от твоей Ненависти.<br>"
 	to_chat(owner.current, greet_text)
@@ -291,7 +292,7 @@
 /// target is in crit and about to be executed.
 /datum/antagonist/hatred/proc/knife_glory_kill(mob/living/carbon/human/target, obj/item/knife/knife, mob/living/carbon/human/killer, list/modifiers, list/attack_modifiers)
 	var/is_glory = TRUE
-	if(target?.stat == DEAD || !target.client) // already dead bodies or npcs don't count
+	if((!target.client && ((world.time - target.lastclienttime) > 10 SECONDS)) || (target.stat == DEAD && ((world.time - target.timeofdeath) > 3 SECONDS))) // already dead bodies or npcs don't count
 		is_glory = FALSE
 	else if(next_speech_time <= world.time)
 		playsound(owner.current, pick(killing_speech), vol = 50, vary = FALSE, ignore_walls = FALSE)
@@ -336,8 +337,10 @@
 	var/datum/antagonist/hatred/Ha = user.mind.has_antag_datum(/datum/antagonist/hatred)
 	if(!Ha || !ishuman(target))
 		return ..()
+	if(!target.get_bodypart(BODY_ZONE_HEAD))
+		return
 	var/is_glory = TRUE
-	if(target?.stat == DEAD || !target.client) // already dead bodies or npcs don't count
+	if((!target.client && ((world.time - target.lastclienttime) > 10 SECONDS)) || (target.stat == DEAD && ((world.time - target.timeofdeath) > 3 SECONDS))) // already dead bodies or npcs don't count
 		is_glory = FALSE
 	else if(Ha.next_speech_time <= world.time)
 		playsound(user, pick(Ha.killing_speech), vol = 50, vary = FALSE, ignore_walls = FALSE)
@@ -371,6 +374,7 @@
 	name = "\proper AK-12 rifle of Hatred"
 	desc = "The scratches on this rifle say: \"The Genocide Machine\"."
 	resistance_flags = FIRE_PROOF | ACID_PROOF
+	max_integrity = 400 // will be damaged during antag's death implant detonation
 	burst_fire_selection = FALSE
 	actions_types = null
 	burst_size = 1
@@ -387,10 +391,10 @@
 	. = ..()
 	AddComponent(/datum/component/automatic_fire, 0.2 SECONDS)
 
-/obj/item/gun/ballistic/automatic/ar/ak12/hatred/Destroy()
-	if(!isnull(original_owner))
-		UnregisterSignal(original_owner, COMSIG_LIVING_DEATH)
-	. = ..()
+// /obj/item/gun/ballistic/automatic/ar/ak12/hatred/Destroy()
+// 	if(!isnull(original_owner))
+// 		UnregisterSignal(original_owner, COMSIG_LIVING_DEATH)
+// 	. = ..()
 
 /obj/item/gun/ballistic/automatic/ar/ak12/hatred/examine(mob/user)
 	. = ..()
@@ -401,28 +405,28 @@
 	. = ..()
 	if(isnull(original_owner))
 		original_owner = user
-		RegisterSignal(original_owner, COMSIG_LIVING_DEATH, PROC_REF(on_hatred_death))
+		// RegisterSignal(original_owner, COMSIG_LIVING_DEATH, PROC_REF(on_hatred_death))
 	if(original_owner == user)
 		ADD_TRAIT(src, TRAIT_NODROP, "hatred")
 
-/obj/item/gun/ballistic/automatic/ar/ak12/hatred/proc/on_hatred_death()
-	SIGNAL_HANDLER
-	if(!QDELETED(src))
-		var/obj/item/gun/ballistic/I = new /obj/item/gun/ballistic/automatic/ar/ak12(get_turf(src))
-		I.name = "\proper AK-12 rifle of Faded Hatred"
-		I.desc = "It looks less menacing than before. The blood stained scratches on this rifle say: \"The Genocide Machine\"."
-		I.resistance_flags = FIRE_PROOF | ACID_PROOF
-		I.burst_fire_selection = FALSE
-		I.actions_types = null
-		var/datum/action/A = locate(/datum/action/item_action/toggle_firemode) in I.actions
-		if(A)
-			I.remove_item_action(A)
-		I.burst_size = 1
-		I.burst_delay = 2
-		I.weapon_weight = WEAPON_HEAVY
-		I.projectile_damage_multiplier = 0.8
-		I.AddComponent(/datum/component/automatic_fire, 0.3 SECONDS)
-		qdel(src)
+// /obj/item/gun/ballistic/automatic/ar/ak12/hatred/proc/on_hatred_death()
+// 	SIGNAL_HANDLER
+// 	if(!QDELETED(src))
+// 		var/obj/item/gun/ballistic/I = new /obj/item/gun/ballistic/automatic/ar/ak12(get_turf(src))
+// 		I.name = "\proper AK-12 rifle of Faded Hatred"
+// 		I.desc = "It looks less menacing than before. The blood stained scratches on this rifle say: \"The Genocide Machine\"."
+// 		I.resistance_flags = FIRE_PROOF | ACID_PROOF
+// 		I.burst_fire_selection = FALSE
+// 		I.actions_types = null
+// 		var/datum/action/A = locate(/datum/action/item_action/toggle_firemode) in I.actions
+// 		if(A)
+// 			I.remove_item_action(A)
+// 		I.burst_size = 1
+// 		I.burst_delay = 2
+// 		I.weapon_weight = WEAPON_HEAVY
+// 		I.projectile_damage_multiplier = 0.8
+// 		I.AddComponent(/datum/component/automatic_fire, 0.3 SECONDS)
+// 		qdel(src)
 
 /obj/item/gun/ballistic/automatic/ar/ak12/hatred/dropped(mob/user, silent)
 	. = ..()
@@ -437,6 +441,7 @@
 	desc = "The scratches on this shotgun say: \"The Bringer of Doom\"."
 	accepted_magazine_type = /obj/item/ammo_box/magazine/internal/shot/hatred
 	resistance_flags = FIRE_PROOF | ACID_PROOF
+	max_integrity = 400 // will be damaged during antag's death implant detonation
 	box_reload_penalty = FALSE
 	fire_delay = 4
 	rack_delay = 4
@@ -447,10 +452,10 @@
 	ammo_type = /obj/item/ammo_casing/shotgun/magnum
 	max_ammo = 6 // there are 7 shells in default ammo boxes, so shotgun has perfect 6+1 slots.
 
-/obj/item/gun/ballistic/shotgun/riot/hatred/Destroy()
-	if(!isnull(original_owner))
-		UnregisterSignal(original_owner, COMSIG_LIVING_DEATH)
-	. = ..()
+// /obj/item/gun/ballistic/shotgun/riot/hatred/Destroy()
+// 	if(!isnull(original_owner))
+// 		UnregisterSignal(original_owner, COMSIG_LIVING_DEATH)
+// 	. = ..()
 
 /obj/item/gun/ballistic/shotgun/riot/hatred/give_manufacturer_examine()
 	return // no more "Nanotrasen Armories"
@@ -479,21 +484,21 @@
 	. = ..()
 	if(isnull(original_owner))
 		original_owner = user
-		RegisterSignal(original_owner, COMSIG_LIVING_DEATH, PROC_REF(on_hatred_death))
+		// RegisterSignal(original_owner, COMSIG_LIVING_DEATH, PROC_REF(on_hatred_death))
 	if(original_owner == user)
 		ADD_TRAIT(src, TRAIT_NODROP, "hatred")
 
-/obj/item/gun/ballistic/shotgun/riot/hatred/proc/on_hatred_death()
-	SIGNAL_HANDLER
-	if(!QDELETED(src))
-		var/obj/item/gun/ballistic/I = new /obj/item/gun/ballistic/shotgun/riot(get_turf(src))
-		I.name = "\proper Riot Shotgun of Faded Hatred"
-		I.desc = "It looks less menacing than before. The blood stained scratches on this shotgun say: \"The Bringer of Doom\"."
-		I.resistance_flags = FIRE_PROOF | ACID_PROOF
-		I.box_reload_penalty = FALSE
-		I.fire_delay = 5
-		// I.rack_delay = 5
-		qdel(src)
+// /obj/item/gun/ballistic/shotgun/riot/hatred/proc/on_hatred_death()
+// 	SIGNAL_HANDLER
+// 	if(!QDELETED(src))
+// 		var/obj/item/gun/ballistic/I = new /obj/item/gun/ballistic/shotgun/riot(get_turf(src))
+// 		I.name = "\proper Riot Shotgun of Faded Hatred"
+// 		I.desc = "It looks less menacing than before. The blood stained scratches on this shotgun say: \"The Bringer of Doom\"."
+// 		I.resistance_flags = FIRE_PROOF | ACID_PROOF
+// 		I.box_reload_penalty = FALSE
+// 		I.fire_delay = 5
+// 		// I.rack_delay = 5
+// 		qdel(src)
 
 /obj/item/gun/ballistic/shotgun/riot/hatred/dropped(mob/user, silent)
 	. = ..()
@@ -550,7 +555,7 @@
 	// 100% = 30
 	// 90% = 27
 	// 80% = 24
-	projectile_damage_multiplier = 0.8
+	projectile_damage_multiplier = 0.85
 	dual_wield_spread = 5
 	var/mob/living/carbon/human/original_owner = null
 
@@ -755,16 +760,16 @@
 	wound = WOUND_ARMOR_HIGH
 
 // trophy
-/datum/armor/hatred_faded
-	melee = 30
-	bullet = 30
-	laser = 30
-	energy = 30
-	bomb = 30
-	bio = 30
-	fire = 60
-	acid = 60
-	wound = WOUND_ARMOR_WEAK
+// /datum/armor/hatred_faded
+// 	melee = 30
+// 	bullet = 30
+// 	laser = 30
+// 	energy = 30
+// 	bomb = 30
+// 	bio = 30
+// 	fire = 60
+// 	acid = 60
+// 	wound = WOUND_ARMOR_WEAK
 
 /obj/item/clothing/suit/jacket/leather_trenchcoat/hatred/equipped(mob/user, slot)
 	. = ..()
@@ -777,14 +782,16 @@
 /obj/item/clothing/suit/jacket/leather_trenchcoat/hatred/proc/on_hatred_death()
 	SIGNAL_HANDLER
 	var/obj/item/clothing/I = new /obj/item/clothing/suit/jacket/leather_trenchcoat(get_turf(src))
-	I.name = "\proper Leather overcoat of Faded Hatred"
-	I.desc = "The blood stained shabby leather overcoat with decent armor paddings. It looks less menacing than before."
+	I.name = "\proper Leather overcoat of Hatred"
+	I.desc = "The blood stained shabby leather overcoat with decent armor paddings and special lightweight kevlar."
 	I.resistance_flags = FIRE_PROOF
+	I.max_integrity = 400
+	I.update_integrity(I.max_integrity) // will be damaged during antag's death implant detonation
 	I.body_parts_covered = CHEST|GROIN|ARMS|LEGS
 	I.cold_protection = CHEST|GROIN|ARMS|LEGS
 	I.heat_protection = CHEST|GROIN|ARMS|LEGS
 	I.max_heat_protection_temperature = ARMOR_MAX_TEMP_PROTECT
-	I.set_armor(/datum/armor/hatred_faded)
+	I.set_armor(/datum/armor/hatred)
 
 /obj/item/clothing/suit/jacket/leather_trenchcoat/hatred/dropped(mob/user)
 	. = ..()
@@ -856,13 +863,14 @@
 	if(Ha.gear_level == 2)
 		// if(Ha.chosen_gun == "Pistols")
 		// 	Ha.high_gear += "Shoot faster"
+		belt = /obj/item/storage/belt/military/assault/hatred
 		Ha.chosen_high_gear = tgui_input_list(H, "Выбери дополнительную экипировку и сделай это БЫСТРО!", "Выбери оружие геноцида", Ha.high_gear, Ha.high_gear[1], 10 SECONDS)
 		switch(Ha.chosen_high_gear)
 			if(null)
-				Ha.chosen_high_gear = "Belt of Hatred"
-				belt = /obj/item/storage/belt/military/assault/hatred
-			if("Belt of Hatred")
-				belt = /obj/item/storage/belt/military/assault/hatred
+				Ha.chosen_high_gear = "More armor"
+				// belt = /obj/item/storage/belt/military/assault/hatred
+			// if("Belt of Hatred")
+			// 	belt = /obj/item/storage/belt/military/assault/hatred
 			// if("Shoot faster")
 			// 	ADD_TRAIT(H, TRAIT_DOUBLE_TAP, "hatred")
 
