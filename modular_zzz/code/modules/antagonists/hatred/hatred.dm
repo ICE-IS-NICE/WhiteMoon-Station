@@ -100,7 +100,7 @@
 	if(chosen_gun == "Riot Shotgun")
 		greet_text += "В твоей кобуре спрятан [span_red("запасной дробовик")], чтобы у тебя всегда под рукой был План Б.<br>"
 	if(chosen_high_gear == "Belt of Hatred")
-		greet_text += "[span_red("Пояс с гранатами")] пожирает сердца твоих жертв и вознаграждает тебя новой взрывоопасной аммуницией.<br>"
+		greet_text += "[span_red("Пояс с гранатами")] пожирает сердца твоих жертв после их добивания и вознаграждает тебя новой взрывоопасной аммуницией.<br>"
 	greet_text += "[span_red(span_bold("Убивай и будь убит!"))] Ибо никто сегодня не защищен от твоей Ненависти.<br>"
 	to_chat(owner.current, greet_text)
 	owner.announce_objectives()
@@ -308,7 +308,6 @@
 			if(!knife.melee_attack_chain(killer, target, modifiers, attack_modifiers))
 				break
 		if(is_glory)
-			// wait for the knife to do its job.
 			addtimer(CALLBACK(knife, TYPE_PROC_REF(/obj/item/knife, check_glory_kill), killer, target), 1 SECONDS, TIMER_DELETE_ME)
 	else
 		target.visible_message(span_notice("[killer] stopped his knife."), span_notice("[killer] stopped his knife!"))
