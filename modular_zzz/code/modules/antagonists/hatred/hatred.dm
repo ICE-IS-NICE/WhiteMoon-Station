@@ -53,12 +53,12 @@
 	var/list/allowed_z_levels = list()
 	/**
 	 * Level of available gear is determined by a number of alive security officers and blueshields.
-	 * 0 = low guns: a pistol or double barrel shotgun. NOT IMPLEMENTED YET!
-	 * 1 = default classic and serious guns: AK-12 or Riot shotgun or Pistols
-	 * 2 = ROBUST gear: +armor or +cursed belt or +fast executions |||| или +1 life on low gear или выбор спавнпоинта или +скорость или адреналин имплант
+	 * 0 = low guns NOT IMPLEMENTED YET!
+	 * 1 = default classic and serious guns
+	 * 2 = high gear
 	 */
 	var/gear_level = 1
-	var/list/low_guns = list("Pistol", "Double-barreled shotgun") // NOT IMPLEMENTED YET!
+	// var/list/low_guns = list("Pistol", "Double-barreled shotgun") // NOT IMPLEMENTED YET!
 	var/list/classic_guns = list("AK12", "Riot Shotgun", "Pistols")
 	// there won't be special level 2 guns, because I don't want antag to have cheat guns. Level 2 gear is always better stats/traits for level 1 gear.
 	var/list/high_gear = list("Belt of Hatred", "More armor", "Faster executions")
@@ -140,7 +140,7 @@
 	H.add_quirk(/datum/quirk/tough, announce = FALSE) // ADD_TRAIT(H, TRAIT_TOUGH, "hatred")
 	H.add_quirk(/datum/quirk/freerunning, announce = FALSE) // ADD_TRAIT(H, TRAIT_FREERUNNING, "hatred")
 	H.add_quirk(/datum/quirk/monochromatic, announce = FALSE)
-	tgui_alert(H, "У тебя есть последняя минута, чтобы собраться с мыслями...", "Ты готов убивать?", list("Я готов убивать."), timeout = 1 MINUTES, autofocus = FALSE)
+	tgui_alert(H, "У тебя есть последняя минута, чтобы собраться с мыслями. Закрой это окошко когда будешь готов...", "Ты готов убивать?", list("Я готов убивать."), timeout = 1 MINUTES, autofocus = FALSE)
 	// WE ARE READY.
 	H.SetImmobilized(0, TRUE)
 	H.fully_heal() // in case of some accidents in spawn room during preparation
@@ -281,7 +281,7 @@
 			var/datum/wound/loss/dismembering = new
 			dismembering.apply_dismember(target.get_bodypart(BODY_ZONE_CHEST), outright = TRUE)
 		// the target is almost dead and we want to glory kill it with a knife.
-		else if(!(target.stat in list(CONSCIOUS, DEAD)) && killer.zone_selected == BODY_ZONE_PRECISE_MOUTH && !isdullahan(target) && target.get_bodypart(BODY_ZONE_HEAD))
+		else if(!(target.stat in list(CONSCIOUS)) && killer.zone_selected == BODY_ZONE_PRECISE_MOUTH && !isdullahan(target) && target.get_bodypart(BODY_ZONE_HEAD))
 			target.visible_message(span_warning("[killer] brings [K] to [target]'s throat, ready to slit it open..."), \
 									span_userdanger("[killer] brings [K] to your throat, ready to slit it open..."))
 			// it's a signal handler so we don't sleep
@@ -428,7 +428,7 @@
 /obj/item/gun/ballistic/automatic/ar/ak12/hatred/dropped(mob/user, silent)
 	. = ..()
 	if(!QDELETED(src))
-		if(user == original_owner) // lost arm
+		if(user == original_owner) // lost arm or something else
 			REMOVE_TRAIT(src, TRAIT_NODROP, "hatred")
 
 /// THE SHOTGUN OF HATRED ///
@@ -499,7 +499,7 @@
 /obj/item/gun/ballistic/shotgun/riot/hatred/dropped(mob/user, silent)
 	. = ..()
 	if(!QDELETED(src))
-		if(user == original_owner) // lost arm
+		if(user == original_owner) // lost arm or something else
 			REMOVE_TRAIT(src, TRAIT_NODROP, "hatred")
 
 /// THE PLAN B ///
@@ -509,7 +509,7 @@
 	desc = "The scratches on this sawn-off double-barreled shotgun say: \"Plan B\"."
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	box_reload_penalty = FALSE
-	spread = -100 // will become 0 during math things. we do it to reduce sawn_off spread.
+	spread = -100 // will become ~0 during math things. we do it to reduce sawn_off spread.
 	accepted_magazine_type = /obj/item/ammo_box/magazine/internal/shot/dual/slugs
 	// copy-paste from proc/sawoff() since we don't have existing solutions.
 	sawn_off = TRUE
@@ -719,7 +719,7 @@
 
 /obj/item/clothing/suit/jacket/leather_trenchcoat/hatred
 	name = "\proper Leather overcoat of Hatred"
-	desc = "The shabby leather overcoat with decent armor paddings. Once it has been splashed with blood you can't take it off anymore."
+	desc = "The shabby leather overcoat with decent armor paddings and special lightweight kevlar. Once it has been splashed with blood you can't take it off anymore."
 	armor_type = /datum/armor/hatred
 	resistance_flags = FIRE_PROOF
 	body_parts_covered = CHEST|GROIN|ARMS|LEGS // just like HOS' armored trenchcoat
