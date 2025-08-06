@@ -292,7 +292,9 @@
 /// target is in crit and about to be executed.
 /datum/antagonist/hatred/proc/knife_glory_kill(mob/living/carbon/human/target, obj/item/knife/knife, mob/living/carbon/human/killer, list/modifiers, list/attack_modifiers)
 	var/is_glory = TRUE
-	if((!target.client && ((world.time - target.lastclienttime) > 10 SECONDS)) || (target.stat == DEAD && ((world.time - target.timeofdeath) > 3 SECONDS))) // already dead bodies or npcs don't count
+	// already dead bodies or npcs don't count
+	// if((!target.client && ((world.time - target.lastclienttime) > 10 SECONDS)) || (target.stat == DEAD && ((world.time - target.timeofdeath) > 3 SECONDS)))
+	if(!target.client || target.stat == DEAD)
 		is_glory = FALSE
 	else if(next_speech_time <= world.time)
 		playsound(owner.current, pick(killing_speech), vol = 50, vary = FALSE, ignore_walls = FALSE)
@@ -340,7 +342,9 @@
 	if(!target.get_bodypart(BODY_ZONE_HEAD))
 		return
 	var/is_glory = TRUE
-	if((!target.client && ((world.time - target.lastclienttime) > 10 SECONDS)) || (target.stat == DEAD && ((world.time - target.timeofdeath) > 3 SECONDS))) // already dead bodies or npcs don't count
+	// already dead bodies or npcs don't count
+	// if((!target.client && ((world.time - target.lastclienttime) > 10 SECONDS)) || (target.stat == DEAD && ((world.time - target.timeofdeath) > 3 SECONDS)))
+	if(!target.client || target.stat == DEAD)
 		is_glory = FALSE
 	else if(Ha.next_speech_time <= world.time)
 		playsound(user, pick(Ha.killing_speech), vol = 50, vary = FALSE, ignore_walls = FALSE)
