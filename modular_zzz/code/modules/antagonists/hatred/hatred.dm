@@ -734,6 +734,7 @@
 	cold_protection = CHEST|GROIN|ARMS|LEGS
 	heat_protection = CHEST|GROIN|ARMS|LEGS
 	max_heat_protection_temperature = ARMOR_MAX_TEMP_PROTECT
+	var/is_trophy = FALSE
 
 /obj/item/clothing/suit/jacket/leather_trenchcoat/hatred/Initialize(mapload)
 	. = ..()
@@ -777,7 +778,7 @@
 
 /obj/item/clothing/suit/jacket/leather_trenchcoat/hatred/equipped(mob/user, slot)
 	. = ..()
-	if(slot == ITEM_SLOT_OCLOTHING)
+	if(slot == ITEM_SLOT_OCLOTHING && !is_trophy)
 		ADD_TRAIT(src, TRAIT_NODROP, "hatred")
 		var/datum/antagonist/hatred/Ha = user.mind?.has_antag_datum(/datum/antagonist/hatred)
 		if(Ha?.chosen_gun == "Pistols")
@@ -785,21 +786,15 @@
 
 /obj/item/clothing/suit/jacket/leather_trenchcoat/hatred/proc/on_hatred_death()
 	SIGNAL_HANDLER
-	var/obj/item/clothing/I = new /obj/item/clothing/suit/jacket/leather_trenchcoat(get_turf(src))
-	I.name = "\proper Leather overcoat of Hatred"
+	var/obj/item/clothing/suit/jacket/leather_trenchcoat/hatred/I = new /obj/item/clothing/suit/jacket/leather_trenchcoat/hatred(get_turf(src))
 	I.desc = "The blood stained shabby leather overcoat with decent armor paddings and special lightweight kevlar."
-	I.resistance_flags = FIRE_PROOF
 	I.max_integrity = 400
 	I.update_integrity(I.max_integrity) // will be damaged during antag's death implant detonation
-	I.body_parts_covered = CHEST|GROIN|ARMS|LEGS
-	I.cold_protection = CHEST|GROIN|ARMS|LEGS
-	I.heat_protection = CHEST|GROIN|ARMS|LEGS
-	I.max_heat_protection_temperature = ARMOR_MAX_TEMP_PROTECT
-	I.set_armor(/datum/armor/hatred)
+	I.is_trophy = TRUE
 
 /obj/item/clothing/suit/jacket/leather_trenchcoat/hatred/dropped(mob/user)
 	. = ..()
-	if(!QDELETED(src))
+	if(!QDELETED(src) && !is_trophy)
 		REMOVE_TRAIT(src, TRAIT_NODROP, "hatred")
 
 /obj/item/clothing/head/invisihat/hatred
