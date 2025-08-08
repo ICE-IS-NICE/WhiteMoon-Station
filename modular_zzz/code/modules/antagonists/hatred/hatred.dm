@@ -118,9 +118,7 @@
 	H.equipOutfit(/datum/outfit/hatred)
 	// H.SetParalyzed(0, TRUE)
 	. = ..()
-	// TRAIT_NICE_SHOT TRAIT_DOUBLE_TAP TRAIT_ANALGESIA
 	// SPECIAL TRAITS
-	// /obj/item/mod/module/power_kick
 	ADD_TRAIT(H, TRAIT_SLEEPIMMUNE, "hatred") // I challenge you to a glorious fight!
 	ADD_TRAIT(H, TRAIT_VIRUS_RESISTANCE, "hatred")
 	ADD_TRAIT(H, TRAIT_NONATURALHEAL, "hatred") // for heal_damage()
@@ -159,7 +157,7 @@
 	addtimer(CALLBACK(src, PROC_REF(alarm_station)), 10 SECONDS, TIMER_DELETE_ME) // Think FAST.
 
 /datum/movespeed_modifier/hatred
-	multiplicative_slowdown = 0.5
+	multiplicative_slowdown = 0.4
 
 /datum/antagonist/hatred/proc/evaluate_security()
 	var/gear_points = length(SSjob.get_living_sec())
