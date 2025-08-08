@@ -37,3 +37,17 @@
 	name = "Suspicious Coat"
 	desc = "Suspicious Coat."
 	icon_state = "merc_coat_synd"
+
+/obj/item/clothing/neck/cloak/eidolon_cape
+	name = "Eidolon officer cape"
+	desc = "A cape of MI13 operatives who have proven themself in Eidolon corporation, infused with purple energy it looks very stylish and even do not restrict movement."
+	icon = 'modular_zzz/icons/obj/clothing/neck.dmi'
+	worn_icon = 'modular_zzz/icons/mob/clothing/neck.dmi'
+	worn_icon_digi = 'modular_zzz/icons/mob/clothing/neck.dmi'
+	icon_state = "eidolon_cape"
+
+/obj/item/clothing/neck/cloak/colonial
+	slot_flags = ITEM_SLOT_NECK
+
+/obj/item/clothing/suit/hooded/cloak/zuliecloak
+	slot_flags = ITEM_SLOT_NECK

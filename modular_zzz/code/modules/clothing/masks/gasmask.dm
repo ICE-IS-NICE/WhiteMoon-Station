@@ -28,13 +28,13 @@
 		usr.audible_message("<b>[usr]</b> exclaims, \"<font color='red' size='4'><b>[frase]</b></font>\"")
 		switch(rand(0,3))
 			if(0)
-				playsound(src.loc, 'modular_zzz/sounds/misc/catcrin_halt0.ogg', 100, 1)
+				playsound(src.loc, 'modular_zzz/sound/misc/catcrin_halt0.ogg', 100, 1)
 			if(1)
-				playsound(src.loc, 'modular_zzz/sounds/misc/catcrin_halt1.ogg', 100, 1)
+				playsound(src.loc, 'modular_zzz/sound/misc/catcrin_halt1.ogg', 100, 1)
 			if(2)
-				playsound(src.loc, 'modular_zzz/sounds/misc/catcrin_halt2.ogg', 100, 1)
+				playsound(src.loc, 'modular_zzz/sound/misc/catcrin_halt2.ogg', 100, 1)
 			if(3)
-				playsound(src.loc, 'modular_zzz/sounds/misc/catcrin_halt3.ogg', 100, 1)
+				playsound(src.loc, 'modular_zzz/sound/misc/catcrin_halt3.ogg', 100, 1)
 
 /obj/item/clothing/mask/gas/syndicate/cool_version/ui_action_click(mob/user, action)
 	if(istype(action, /datum/action/item_action/maskhalt))
@@ -92,3 +92,8 @@
 /obj/item/clothing/mask/balaclava/breath
 	name = "Breathaclava"
 	clothing_flags = BLOCK_GAS_SMOKE_EFFECT | MASKINTERNALS | GAS_FILTERING
+
+/obj/item/clothing/mask/gas/syndicate/eo95_mask
+	name = "EO-95 mask"
+	desc = "A mask with ariral design, emits  a strange purple particles around it, allow the user to breath more cleaner air, that would be safer for it's owner because of anatomy of arirals."
+	icon_state = "eo95_mask"
