@@ -1,36 +1,27 @@
 /**
  * Данный антаг был вдоховлен игрою "Hatred" (2015).
  *
- * Антаг будет находиться в бета тесте неопределенное время в зависимости от того, смогу ли я "ловить моменты" появления антага в раунде и наблюдать за ним,
- * а также наличия конструктивного фидбека игроков.
- *
  * Краткое пояснение концепта антага и игромеханических решений:
  * 		Концепт: мажорный мидраунд антаг для хард динамика с целью моментального массового ПВП пиздореза. Почти как Lone Operative, но этот не должен
- * взрывать нюку и завершать раунд. Минимум манча и времени на разогрев. Только при существенном онлайне и с достаточным количеством живых офицеров СБ.
+ * просто закончить раунд, убив капитана. Минимум манча и времени на разогрев. Только при существенном онлайне и с достаточным количеством живых офицеров СБ.
  * 		Хил от убийства других игроков: как и в оригинальной игре персонаж восстанавливает здоровье от кинематографичных убийств (glory kills) и это является
  * единственным способом востановить здоровье. Я полагаю и в сске оно будет выглядеть уместно и вполне сбалансированно. Игроку для восстановления
- * здоровья необходимо заставить живую цель не двигаться около 10 секунд и убить её выстрелом вплотную для восстановления здоровья. Тем самым мы снижаем
+ * здоровья необходимо заставить живую цель не двигаться вплоть до ~10 секунд и убить её выстрелом вплотную для восстановления здоровья. Тем самым мы снижаем
  * градус ахуевания антага и заставляем его делать передышики и играть аккуратнее, ведь он один, всегда уязвим и не может прятаться в космосе или вне станции,
  * как делает абсолютное большинство антагов.
- * 		Калаш с бесконечными патронами: в оригинальной игре это раундстарт каноничное оружие. По локации разбросана куча других оружий,
- * а также оружие щедро падает с бесконечных волн полицейских. Но в сске у нас ограниченное количество СБ, поэтому рано или поздно антаг пойдет манчить
- * себе оружие. Этот антаг создан для пиздореза, а не получасового манча оружейки, поэтому я хочу свести к минимуму любой существенный манч.
+ * 		Оружие с бесконечными патронами: в оригинальной игре по локации разбросана куча других оружий, а также оружие щедро падает с бесконечных волн
+ * полицейских. Но в сске у нас ограниченное количество СБ, поэтому рано или поздно антаг пойдет манчить себе оружие. Этот антаг создан для пиздореза,
+ * а не получасового манча оружейки, поэтому я хочу свести к минимуму любой существенный манч.
  * 		"Прикрученное намертво" снаряжение: всё минимально необходимое снаряжение намертво прикручено к персонажу. Оно хорошо сбалансированно
  * для ведения продолжительных пвп битв, но не является читами и накладывает массу ограничений, поэтому при возможности игрок скинул бы свое снаряжение и
  * взял бы что-то более мощное, убийственное или полезное, например МОДсьюты или хардсьюты ЕРТшников, но я ему не позволю, ибо как сказано в предыдущем
  * пункте: это антаг не для манча, а для моментального пиздореза.
- * 		Разгрузка с гранатами в обмен на сердца: это уже моя "отсебятина", такого в оригинальной игре нет. Очень спорная штука и она является первой
- * на очереди к нерфу, если антаг мне покажется излишне сильным. На этапе раннего бета тестирования будет отключена.
  *
  * Если будет востребованно, то я возможно сделаю:
  * 		- Антаг худ (квадратик над персонажем с иконкой роли)
- * 		- Спрайты для уникального шмота.
  * 		- Счетчик убийств и вывод его в итоги раунда (здесь мне нужна помощь, я не знаю, как считать сочные фраги).
  * 			- минимум убийств для получения гринтекста.
- * 			- порог убийств для самостоятельного вывода антага из раунда (если перебил пол станции).
- * 			- события после определенного кол-ва убийств.
- * 		- Разработка механа эффектного добивания ножом.
- * 		- Прибытие антага с шаттла карго.
+ * 			- события после определенного кол-ва убийств (если перебил пол станции)..
  * 		- Больше QOL фич, если у меня или других игроков будут хорошие и выполнимые идеи.
  */
 
@@ -52,7 +43,7 @@
 	antag_ticket_multiplier = 1
 	var/list/allowed_z_levels = list()
 	/**
-	 * Level of available gear is determined by a number of alive security officers and blueshields.
+	 * Level of available gear is determined by a number of alive security officers and other conditions.
 	 * 0 = low guns NOT IMPLEMENTED YET!
 	 * 1 = default classic and serious guns
 	 * 2 = high gear
@@ -147,7 +138,7 @@
 	allowed_z_levels += SSmapping.levels_by_trait(ZTRAIT_CENTCOM)
 	allowed_z_levels += SSmapping.levels_by_trait(ZTRAIT_RESERVED)
 	allowed_z_levels += SSmapping.levels_by_trait(ZTRAIT_STATION)
-	RegisterSignal(H, COMSIG_LIVING_LIFE, PROC_REF(check_hatred_off_station)) // almost like anchor implant, but doesn't hurt
+	RegisterSignal(H, COMSIG_MOVABLE_Z_CHANGED, PROC_REF(check_hatred_off_station)) // almost like anchor implant, but doesn't hurt
 	RegisterSignals(H, COMSIG_LIVING_ADJUST_STANDARD_DAMAGE_TYPES, PROC_REF(on_try_healing)) // for AdjustXXXLoss()
 	RegisterSignal(H, COMSIG_MOB_EQUIPPED_ITEM, PROC_REF(check_knife)) // any knife we pick might be our deadliest weapon
 	RegisterSignal(H, COMSIG_MOB_TRYING_TO_FIRE_GUN, PROC_REF(check_used_gun))
@@ -271,7 +262,7 @@
 /datum/antagonist/hatred/proc/knife_check_glory(obj/item/knife/K, mob/living/target_mob, mob/user, list/modifiers, list/attack_modifiers)
 	SIGNAL_HANDLER
 	if(ishuman(target_mob) && ishuman(user) && target_mob != user)
-		if(length(attack_modifiers) && attack_modifiers[FORCE_OVERRIDE] == 200) // no need to check. the lethal strike is about to blown.
+		if(length(attack_modifiers) && attack_modifiers[FORCE_OVERRIDE] == 200) // no need to check. the lethal strike is about to be blown.
 			return
 		var/mob/living/carbon/human/target = target_mob
 		var/mob/living/carbon/human/killer = user
@@ -323,12 +314,12 @@
 
 /datum/antagonist/hatred/on_removal()
 	var/mob/living/L = owner.current
-	UnregisterSignal(L, COMSIG_LIVING_LIFE)
+	UnregisterSignal(L, COMSIG_MOVABLE_Z_CHANGED)
 	UnregisterSignal(L, COMSIG_LIVING_ADJUST_STANDARD_DAMAGE_TYPES)
 	UnregisterSignal(L, COMSIG_MOB_EQUIPPED_ITEM)
 	UnregisterSignal(L, COMSIG_MOB_TRYING_TO_FIRE_GUN)
 	. = ..()
-	if(istype(L))
+	if(!QDELETED(L) && istype(L))
 		ADD_TRAIT(L, TRAIT_PREVENT_IMPLANT_AUTO_EXPLOSION, "hatred") // no boom on admin remove
 		to_chat(L, span_userdanger("As Hatred leaves your mind, it consumes you completely..."))
 		L.dust(force = TRUE) // from ghosts we come, to ghosts we leave.
@@ -372,6 +363,7 @@
 
 /// THE GUN OF HATRED ///
 
+// we don't have ak47. what a disappointment. wake me up when we have one.
 /obj/item/gun/ballistic/automatic/ar/ak12/hatred
 	name = "\proper AK-12 rifle of Hatred"
 	desc = "The scratches on this rifle say: \"The Genocide Machine\"."
@@ -388,15 +380,11 @@
 	// 80% = 28
 	projectile_damage_multiplier = 0.8
 	var/mob/living/carbon/human/original_owner = null
+	var/is_trophy = FALSE
 
 /obj/item/gun/ballistic/automatic/ar/ak12/hatred/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/automatic_fire, 0.2 SECONDS)
-
-// /obj/item/gun/ballistic/automatic/ar/ak12/hatred/Destroy()
-// 	if(!isnull(original_owner))
-// 		UnregisterSignal(original_owner, COMSIG_LIVING_DEATH)
-// 	. = ..()
 
 /obj/item/gun/ballistic/automatic/ar/ak12/hatred/examine(mob/user)
 	. = ..()
@@ -405,34 +393,22 @@
 
 /obj/item/gun/ballistic/automatic/ar/ak12/hatred/equipped(mob/living/user, slot)
 	. = ..()
-	if(isnull(original_owner))
-		original_owner = user
-		// RegisterSignal(original_owner, COMSIG_LIVING_DEATH, PROC_REF(on_hatred_death))
-	if(original_owner == user)
-		ADD_TRAIT(src, TRAIT_NODROP, "hatred")
+	if(!is_trophy)
+		if(isnull(original_owner))
+			original_owner = user
+			RegisterSignal(original_owner, COMSIG_LIVING_DEATH, PROC_REF(on_hatred_death))
+		if(original_owner == user)
+			ADD_TRAIT(src, TRAIT_NODROP, "hatred")
 
-// /obj/item/gun/ballistic/automatic/ar/ak12/hatred/proc/on_hatred_death()
-// 	SIGNAL_HANDLER
-// 	if(!QDELETED(src))
-// 		var/obj/item/gun/ballistic/I = new /obj/item/gun/ballistic/automatic/ar/ak12(get_turf(src))
-// 		I.name = "\proper AK-12 rifle of Faded Hatred"
-// 		I.desc = "It looks less menacing than before. The blood stained scratches on this rifle say: \"The Genocide Machine\"."
-// 		I.resistance_flags = FIRE_PROOF | ACID_PROOF
-// 		I.burst_fire_selection = FALSE
-// 		I.actions_types = null
-// 		var/datum/action/A = locate(/datum/action/item_action/toggle_firemode) in I.actions
-// 		if(A)
-// 			I.remove_item_action(A)
-// 		I.burst_size = 1
-// 		I.burst_delay = 2
-// 		I.weapon_weight = WEAPON_HEAVY
-// 		I.projectile_damage_multiplier = 0.8
-// 		I.AddComponent(/datum/component/automatic_fire, 0.3 SECONDS)
-// 		qdel(src)
+/obj/item/gun/ballistic/automatic/ar/ak12/hatred/proc/on_hatred_death()
+	SIGNAL_HANDLER
+	desc = "The blood stained scratches on this rifle say: \"The Genocide Machine\"."
+	is_trophy = TRUE
+	REMOVE_TRAIT(src, TRAIT_NODROP, "hatred")
 
 /obj/item/gun/ballistic/automatic/ar/ak12/hatred/dropped(mob/user, silent)
 	. = ..()
-	if(!QDELETED(src))
+	if(!is_trophy)
 		if(user == original_owner) // lost arm or something else
 			REMOVE_TRAIT(src, TRAIT_NODROP, "hatred")
 
@@ -448,16 +424,12 @@
 	fire_delay = 4
 	rack_delay = 4
 	var/mob/living/carbon/human/original_owner = null
-	var/quick_empty_flag = FALSE
+	var/quick_empty_flag = FALSE // is user quick emptying it right now
+	var/is_trophy = FALSE
 
 /obj/item/ammo_box/magazine/internal/shot/hatred
 	ammo_type = /obj/item/ammo_casing/shotgun/magnum
 	max_ammo = 6 // there are 7 shells in default ammo boxes, so shotgun has perfect 6+1 slots.
-
-// /obj/item/gun/ballistic/shotgun/riot/hatred/Destroy()
-// 	if(!isnull(original_owner))
-// 		UnregisterSignal(original_owner, COMSIG_LIVING_DEATH)
-// 	. = ..()
 
 /obj/item/gun/ballistic/shotgun/riot/hatred/give_manufacturer_examine()
 	return // no more "Nanotrasen Armories"
@@ -484,27 +456,22 @@
 
 /obj/item/gun/ballistic/shotgun/riot/hatred/equipped(mob/living/user, slot)
 	. = ..()
-	if(isnull(original_owner))
-		original_owner = user
-		// RegisterSignal(original_owner, COMSIG_LIVING_DEATH, PROC_REF(on_hatred_death))
-	if(original_owner == user)
-		ADD_TRAIT(src, TRAIT_NODROP, "hatred")
+	if(!is_trophy)
+		if(isnull(original_owner))
+			original_owner = user
+			RegisterSignal(original_owner, COMSIG_LIVING_DEATH, PROC_REF(on_hatred_death))
+		if(original_owner == user)
+			ADD_TRAIT(src, TRAIT_NODROP, "hatred")
 
-// /obj/item/gun/ballistic/shotgun/riot/hatred/proc/on_hatred_death()
-// 	SIGNAL_HANDLER
-// 	if(!QDELETED(src))
-// 		var/obj/item/gun/ballistic/I = new /obj/item/gun/ballistic/shotgun/riot(get_turf(src))
-// 		I.name = "\proper Riot Shotgun of Faded Hatred"
-// 		I.desc = "It looks less menacing than before. The blood stained scratches on this shotgun say: \"The Bringer of Doom\"."
-// 		I.resistance_flags = FIRE_PROOF | ACID_PROOF
-// 		I.box_reload_penalty = FALSE
-// 		I.fire_delay = 5
-// 		// I.rack_delay = 5
-// 		qdel(src)
+/obj/item/gun/ballistic/shotgun/riot/hatred/proc/on_hatred_death()
+	SIGNAL_HANDLER
+	desc = "The blood stained scratches on this shotgun say: \"The Bringer of Doom\"."
+	is_trophy = TRUE
+	REMOVE_TRAIT(src, TRAIT_NODROP, "hatred")
 
 /obj/item/gun/ballistic/shotgun/riot/hatred/dropped(mob/user, silent)
 	. = ..()
-	if(!QDELETED(src))
+	if(!is_trophy)
 		if(user == original_owner) // lost arm or something else
 			REMOVE_TRAIT(src, TRAIT_NODROP, "hatred")
 
@@ -685,10 +652,6 @@
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	var/glory_points = 0
 
-/obj/item/storage/belt/military/assault/hatred/Initialize(mapload)
-	. = ..()
-	atom_storage.max_slots = 3
-
 /obj/item/storage/belt/military/assault/hatred/examine(mob/user)
 	. = ..()
 	. += "If you place a heart into this phenomenal belt next time you check there will be no heart but a deadly explosive."
@@ -784,7 +747,7 @@
 
 /obj/item/clothing/suit/jacket/leather_trenchcoat/hatred/proc/on_hatred_death()
 	SIGNAL_HANDLER
-	var/obj/item/clothing/suit/jacket/leather_trenchcoat/hatred/I = new /obj/item/clothing/suit/jacket/leather_trenchcoat/hatred(get_turf(src))
+	var/obj/item/clothing/suit/jacket/leather_trenchcoat/hatred/I = new type(get_turf(src))
 	I.desc = "The blood stained shabby leather overcoat with decent armor paddings and special lightweight kevlar."
 	I.max_integrity = 400
 	I.update_integrity(I.max_integrity) // will be damaged during antag's death implant detonation
@@ -830,8 +793,8 @@
 		/obj/item/knife/combat = 1,
 		/obj/item/flashlight/seclite = 1,
 		// /obj/item/sensor_device = 1,
-		/obj/item/crowbar = 1,
-		/obj/item/lighter/skull = 1
+		/obj/item/crowbar = 1
+		// /obj/item/lighter/skull = 1
 		)
 	// r_hand = /obj/item/gun/ballistic/automatic/ar/ak12/hatred
 	implants = list(/obj/item/implant/explosive)
@@ -899,6 +862,7 @@
 	new /obj/item/grenade/frag(B)
 	var/obj/item/reagent_containers/cup/glass/bottle/molotov/mol = new /obj/item/reagent_containers/cup/glass/bottle/molotov(B)
 	mol.reagents.add_reagent(/datum/reagent/consumable/ethanol/vodka, 100)
+	new /obj/item/lighter/skull(B)
 
 	var/obj/item/storage/pouch/ammo/hatred/P = H.get_item_by_slot(ITEM_SLOT_LPOCKET)
 	var/datum/antagonist/hatred/Ha = H.mind?.has_antag_datum(/datum/antagonist/hatred)
