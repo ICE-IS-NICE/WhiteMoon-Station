@@ -148,7 +148,7 @@
 	addtimer(CALLBACK(src, PROC_REF(alarm_station)), 10 SECONDS, TIMER_DELETE_ME) // Think FAST.
 
 /datum/movespeed_modifier/hatred
-	multiplicative_slowdown = 0.4
+	multiplicative_slowdown = 0.5
 
 /datum/antagonist/hatred/proc/evaluate_security()
 	var/gear_points = length(SSjob.get_living_sec())
