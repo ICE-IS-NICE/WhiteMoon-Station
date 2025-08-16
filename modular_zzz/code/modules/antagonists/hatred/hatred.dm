@@ -35,7 +35,7 @@
 	name = "\improper Mass Shooter"
 	antagpanel_category = "Mass Shooter"
 	roundend_category = "Mass Shooter"
-	pref_flag = ROLE_LONE_OPERATIVE
+	pref_flag = ROLE_MASS_SHOOTER
 	antag_moodlet = /datum/mood_event/focused
 	suicide_cry = "I REGRET NOTHING."
 	show_to_ghosts = TRUE
@@ -76,6 +76,12 @@
 									/obj/item/gun/ballistic/automatic/pistol/m1911/hatred,
 									/obj/item/gun/ballistic/shotgun/doublebarrel/hatred_sawn_off
 									)
+
+/datum/job/hatred
+	title = ROLE_MASS_SHOOTER
+
+/datum/antagonist/hatred/get_preview_icon()
+	return finish_preview_icon(icon('modular_zzz/code/modules/antagonists/hatred/hatred_icon.dmi', "human"))
 
 /datum/antagonist/hatred/greet()
 	var/greet_text
@@ -893,9 +899,9 @@
 	name = "Mass Shooter"
 	config_tag = "Mass Shooter"
 	candidate_role = "Mass Shooter"
-	// preview_antag_datum = /datum/antagonist/nukeop
+	preview_antag_datum = /datum/antagonist/hatred
 	midround_type = HEAVY_MIDROUND
-	pref_flag = ROLE_LONE_OPERATIVE
+	pref_flag = ROLE_MASS_SHOOTER
 	ruleset_flags = RULESET_INVADER
 	weight = list(
 		DYNAMIC_TIER_LOW = 0,
@@ -931,6 +937,7 @@
 	candidate.transfer_to(body, force_key_move = TRUE)
 	body.dna.remove_all_mutations()
 	body.dna.update_dna_identity()
+	candidate.set_assigned_role(SSjob.get_job_type(/datum/job/hatred))
 	candidate.add_antag_datum(/datum/antagonist/hatred)
 	// message_admins("[ADMIN_LOOKUPFLW(body)] has been made into a Mass Shooter by the midround ruleset.")
 	// log_game("DYNAMIC: [key_name(body)] was spawned as a Mass Shooter by the midround ruleset.")
@@ -979,7 +986,7 @@
 	var/turf/entry_spawn_loc = GET_ERROR_ROOM // what a fine empty room. why don't we borrow it for a couple of seconds during preparation.
 	if(isnull(entry_spawn_loc) || isnull(find_safe_turf(extended_safety_checks = TRUE, dense_atoms = FALSE))) // we'll send him on station right away so we think ahead.
 		return MAP_ERROR
-	var/mob/chosen_one = SSpolling.poll_ghost_candidates(check_jobban = ROLE_LONE_OPERATIVE, role = ROLE_LONE_OPERATIVE, alert_pic = /obj/item/gun/ballistic/automatic/ar/ak12, role_name_text = "Mass Shooter", amount_to_pick = 1)
+	var/mob/chosen_one = SSpolling.poll_ghost_candidates(check_jobban = ROLE_MASS_SHOOTER, role = ROLE_MASS_SHOOTER, alert_pic = /obj/item/gun/ballistic/automatic/ar/ak12, role_name_text = "Mass Shooter", amount_to_pick = 1)
 	if(isnull(chosen_one))
 		return NOT_ENOUGH_PLAYERS
 	var/mob/living/carbon/human/body = new (entry_spawn_loc)
@@ -988,6 +995,7 @@
 	var/datum/mind/Mind = new /datum/mind(chosen_one.key)
 	Mind.active = TRUE
 	Mind.transfer_to(body)
+	Mind.set_assigned_role(SSjob.get_job_type(/datum/job/hatred))
 	Mind.add_antag_datum(/datum/antagonist/hatred)
 	// playsound(dragon, 'sound/effects/magic/ethereal_exit.ogg', 50, TRUE, -1)
 	message_admins("[ADMIN_LOOKUPFLW(body)] has been made into a Mass Shooter by an event.")
