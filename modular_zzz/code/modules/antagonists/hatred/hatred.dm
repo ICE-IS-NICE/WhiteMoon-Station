@@ -725,18 +725,6 @@
 	acid = 80
 	wound = WOUND_ARMOR_HIGH
 
-// trophy
-// /datum/armor/hatred_faded
-// 	melee = 30
-// 	bullet = 30
-// 	laser = 30
-// 	energy = 30
-// 	bomb = 30
-// 	bio = 30
-// 	fire = 60
-// 	acid = 60
-// 	wound = WOUND_ARMOR_WEAK
-
 /obj/item/clothing/suit/jacket/leather_trenchcoat/hatred/equipped(mob/user, slot)
 	. = ..()
 	if(slot == ITEM_SLOT_OCLOTHING && !is_trophy)
@@ -760,7 +748,7 @@
 
 /obj/item/clothing/head/invisihat/hatred
 	name = "\proper Veil of Hatred"
-	desc = "Once you felt <b><i>that</i></b> urge to commit relentless genocide of civilians, you clearly understood you were cursed... blessed... and... protected by invisible spirit of Hatred."
+	desc = "Once you felt <b><i>that</i></b> urge to commit relentless genocide of civilians, you clearly understood you were cursed... blessed... and... protected by invisible Veil of Hatred."
 	armor_type = /datum/armor/hatred
 	resistance_flags = FIRE_PROOF
 
@@ -792,7 +780,6 @@
 	backpack_contents = list(/obj/item/storage/box/survival/engineer = 1,
 		/obj/item/knife/combat = 1,
 		/obj/item/flashlight/seclite = 1,
-		// /obj/item/sensor_device = 1,
 		/obj/item/crowbar = 1
 		// /obj/item/lighter/skull = 1
 		)
