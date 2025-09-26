@@ -10665,7 +10665,6 @@
 #include "modular_zzz\modules\customization\taur_types.dm"
 #include "modular_zzz\modules\customization\markings\plain.dm"
 #include "modular_zzz\modules\digitigrade_cybernetics\code\robot_bodyparts.dm"
-#include "modular_zzz\modules\ear_protect_temp_fix\code\ear_protect_fix.dm"
 #include "modular_zzz\modules\new_icons\cult\cult_clothing.dm"
 #include "modular_zzz\modules\new_icons\cult\cult_items.dm"
 #include "modular_zzz\modules\new_icons\cult\cult_structures.dm"
