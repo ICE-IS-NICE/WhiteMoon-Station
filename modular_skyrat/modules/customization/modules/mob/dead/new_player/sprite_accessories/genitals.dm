@@ -93,6 +93,9 @@
 	//default_color = DEFAULT_SKIN_OR_PRIMARY //This is the price we're paying for sheaths
 	relevent_layers = list(BODY_BEHIND_LAYER, BODY_FRONT_LAYER)
 	var/can_have_sheath = TRUE
+	var/knotted = FALSE
+	var/override_string_knot = "knot"
+	var/override_string_tie = "tie"
 
 /datum/sprite_accessory/genital/penis/get_special_icon(mob/living/carbon/human/target_mob)
 	var/taur_mode = target_mob?.get_taur_mode()
@@ -238,10 +241,39 @@
 	name = "Spade"
 	alt_aroused = FALSE
 
+/datum/sprite_accessory/genital/vagina/feline
+	icon_state = "human"
+	name = "Feline"
+	alt_aroused = FALSE
+
+/datum/sprite_accessory/genital/vagina/equine
+	icon_state = "human"
+	name = "Equine"
+	alt_aroused = FALSE
+
+/datum/sprite_accessory/genital/vagina/cervine
+	icon_state = "human"
+	name = "Cervine"
+	alt_aroused = FALSE
+
+/datum/sprite_accessory/genital/vagina/sergal
+	icon_state = "human"
+	name = "Sergal"
+	alt_aroused = FALSE
+
+/datum/sprite_accessory/genital/vagina/hemi
+	icon_state = "human"
+	name = "Hemi"
+	alt_aroused = FALSE
+
 /datum/sprite_accessory/genital/vagina/furred
 	icon_state = "furred"
 	name = "Furred"
 	alt_aroused = FALSE
+
+/datum/sprite_accessory/genital/vagina/puffy
+	icon_state = "human"
+	name = "Puffy"
 
 /datum/sprite_accessory/genital/vagina/gaping
 	icon_state = "gaping"

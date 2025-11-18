@@ -21,6 +21,7 @@
 	SIGNAL_HANDLER
 
 	if(stored)
+		modify_appearance(stored, FALSE) // SPLURT EDIT - CYBORGS - Reverting to original appearance
 		stored.forceMove(get_turf(src))
 		stored = null
 
@@ -120,9 +121,6 @@
 	stored = new /obj/item/reagent_containers/cup/beaker/large(src)
 
 /obj/item/borg/apparatus/beaker/Destroy()
-	if(stored)
-		var/obj/item/reagent_containers/reagent_container = stored
-		reagent_container.SplashReagents(get_turf(src))
 	QDEL_NULL(stored)
 	return ..()
 
@@ -249,6 +247,7 @@
 	var/obj/item/organ = stored
 	user.visible_message(span_notice("[user] dumps [organ] from [src]."), span_notice("You dump [organ] from [src]."))
 	cut_overlays()
+	modify_appearance(stored, FALSE) // SPLURT EDIT - CYBORGS - Reverting to original appearance
 	organ.forceMove(get_turf(src))
 	return CLICK_ACTION_SUCCESS
 
