@@ -33,8 +33,8 @@
 	if(!(locate(/mob/living/silicon/ai) in GLOB.silicon_mobs))
 		return FALSE
 
-	priority_announce("Hostile runtimes detected in all station systems, please deactivate your AI to prevent possible damage to its morality core.", \
-		"Anomaly Alert", ANNOUNCER_AIMALF, players = list(hallucinator))
+	priority_announce("Во всех системах станции обнаружены вирусы. Пожалуйста, картируйте ваш ИИ, чтобы предотвратить возможный ущерб его моральному ядру.", \
+		"ВНИМАНИЕ: Аномалия", ANNOUNCER_AIMALF, players = list(hallucinator))
 	return ..()
 
 /datum/hallucination/station_message/heretic

@@ -39,3 +39,9 @@
 
 /datum/supply_pack/goody/thermal_single // Два немного ухудшенных АЕГа. Прикольные. Если ЕМАГнуть - будет ультра-мега-пушка.
 	cost = PAYCHECK_COMMAND * 30
+
+/datum/supply_pack/goody/short_mod_laser // АЕГ за 5000 кредитов.
+	name = "Hoshi Modular Laser Carbine"
+	desc = "Модулярная лазерная винтовка с интегрированной автозарядкой."
+	cost = PAYCHECK_COMMAND * 50
+	contains = list(/obj/item/gun/energy/modular_laser_rifle/carbine)
