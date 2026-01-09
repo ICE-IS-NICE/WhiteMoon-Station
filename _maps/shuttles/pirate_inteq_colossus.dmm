@@ -462,11 +462,9 @@
 	movement_force = list("KNOCKDOWN"=0,"THROW"=0);
 	name = "InteQ Collosus";
 	port_direction = 2;
-	dir = 4;
 	preferred_direction = 4
 	},
 /obj/docking_port/stationary{
-	dir = 4;
 	dwidth = 17;
 	height = 19;
 	shuttle_id = "pirate_home";
@@ -663,7 +661,6 @@
 /area/shuttle/pirate)
 "ty" = (
 /obj/machinery/turretid{
-	icon_state = "control_kill";
 	lethal = 1;
 	locked = 0;
 	pixel_y = null;
@@ -830,6 +827,13 @@
 /obj/structure/window/reinforced/survival_pod/spawner/directional/north,
 /turf/open/floor/iron/white,
 /area/shuttle/pirate)
+"xH" = (
+/obj/machinery/porta_turret/syndicate/energy{
+	dir = 9;
+	faction = list("pirate")
+	},
+/turf/closed/wall/mineral/plastitanium/nodiagonal,
+/area/shuttle/pirate)
 "xO" = (
 /obj/effect/mob_spawn/ghost_role/human/pirate/inteq{
 	dir = 1
@@ -926,6 +930,10 @@
 	},
 /turf/open/floor/plating,
 /area/shuttle/pirate)
+"zL" = (
+/obj/structure/falsewall/plastitanium,
+/turf/open/floor/iron/dark,
+/area/shuttle/pirate)
 "zN" = (
 /obj/machinery/sleeper/syndie{
 	dir = 4
@@ -969,9 +977,6 @@
 /area/shuttle/pirate)
 "Av" = (
 /obj/machinery/light,
-/obj/effect/mob_spawn/ghost_role/human/pirate/inteq/warlord{
-	dir = 8
-	},
 /turf/open/floor/carpet/royalblack,
 /area/shuttle/pirate)
 "AC" = (
@@ -1323,7 +1328,7 @@
 	dir = 8
 	},
 /obj/machinery/firealarm/directional/north,
-/obj/machinery/suit_storage_unit/inteq_mod,
+/obj/machinery/suit_storage_unit/inteq,
 /turf/open/floor/iron/dark,
 /area/shuttle/pirate)
 "Kn" = (
@@ -1338,6 +1343,13 @@
 	},
 /obj/machinery/light/cold/directional/east,
 /turf/open/floor/pod/dark,
+/area/shuttle/pirate)
+"KB" = (
+/obj/machinery/porta_turret/syndicate/energy{
+	dir = 10;
+	faction = list("pirate")
+	},
+/turf/closed/wall/mineral/plastitanium/nodiagonal,
 /area/shuttle/pirate)
 "KD" = (
 /obj/machinery/porta_turret/syndicate/irs/inteq{
@@ -1494,11 +1506,9 @@
 /turf/open/floor/iron/dark,
 /area/shuttle/pirate)
 "Oi" = (
-/obj/machinery/power/smes/engineering{
-	charge = 1e+006
-	},
 /obj/effect/mapping_helpers/apc/cut_AI_wire,
 /obj/structure/cable,
+/obj/machinery/power/smes/magical,
 /turf/open/floor/iron/dark,
 /area/shuttle/pirate)
 "Oy" = (
@@ -1635,6 +1645,12 @@
 /obj/structure/reagent_dispensers/watertank,
 /obj/machinery/firealarm/directional/south,
 /turf/open/floor/pod/dark,
+/area/shuttle/pirate)
+"Sy" = (
+/obj/effect/mob_spawn/ghost_role/human/pirate/inteq/warlord{
+	dir = 8
+	},
+/turf/open/floor/carpet/royalblack,
 /area/shuttle/pirate)
 "Sz" = (
 /obj/machinery/portable_atmospherics/canister/oxygen,
@@ -1793,12 +1809,11 @@
 /area/shuttle/pirate)
 "XF" = (
 /obj/structure/closet/crate,
-/obj/item/tank/jetpack/oxygen/harness,
-/obj/item/tank/jetpack/oxygen/harness,
-/obj/item/tank/jetpack/oxygen/harness,
 /obj/structure/sign/departments/cargo/directional/west,
-/obj/item/tank/jetpack/oxygen/harness,
-/obj/item/tank/jetpack/oxygen/harness,
+/obj/item/tank/jetpack/harness,
+/obj/item/tank/jetpack/harness,
+/obj/item/storage/box/syndie_kit/space_suit,
+/obj/item/storage/box/syndie_kit/space_suit,
 /turf/open/floor/iron,
 /area/shuttle/pirate)
 "XQ" = (
@@ -2177,7 +2192,7 @@ Kn
 Kn
 Kn
 Kn
-uG
+xH
 oa
 qJ
 dh
@@ -2187,7 +2202,7 @@ xk
 Ai
 Dw
 OQ
-uG
+KB
 Kn
 Kn
 Kn
@@ -2334,7 +2349,7 @@ jd
 uG
 fK
 en
-uG
+zL
 vq
 UZ
 ox
@@ -2490,7 +2505,7 @@ Kn
 (31,1,1) = {"
 Kn
 ql
-BP
+Sy
 ty
 Wi
 ta
