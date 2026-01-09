@@ -495,6 +495,7 @@
 /obj/item/grenade/smokebomb{
 	pixel_x = 5
 	},
+/obj/item/grenade/syndieminibomb,
 /turf/open/floor/iron/dark,
 /area/shuttle/pirate)
 "pR" = (
@@ -687,19 +688,23 @@
 	dir = 4
 	},
 /obj/item/dualsaber{
-	pixel_x = -5
+	pixel_x = -5;
+	pixel_y = -10
 	},
 /obj/item/melee/energy/sword/saber,
 /obj/item/melee/energy/sword/saber{
 	pixel_y = 15
 	},
-/obj/item/multitool{
-	pixel_y = -5;
-	pixel_x = 10
-	},
 /obj/item/melee/energy/sword/saber{
 	pixel_y = 15;
 	pixel_x = 15
+	},
+/obj/item/melee/energy/sword/saber{
+	pixel_x = 15
+	},
+/obj/item/multitool{
+	pixel_y = -5;
+	pixel_x = 10
 	},
 /turf/open/floor/iron/dark,
 /area/shuttle/pirate)
@@ -1186,7 +1191,7 @@
 	dir = 8
 	},
 /obj/machinery/light/cold/directional/west,
-/obj/machinery/suit_storage_unit/inteq_mod,
+/obj/machinery/suit_storage_unit/inteq,
 /turf/open/floor/iron/dark,
 /area/shuttle/pirate)
 "Fi" = (
@@ -1226,7 +1231,17 @@
 /turf/open/floor/wood,
 /area/shuttle/pirate)
 "GI" = (
-/obj/machinery/suit_storage_unit/inteq,
+/obj/structure/closet/crate,
+/obj/item/tank/jetpack/harness,
+/obj/item/tank/jetpack/harness,
+/obj/item/tank/jetpack/harness,
+/obj/item/tank/jetpack/harness,
+/obj/item/tank/jetpack/harness,
+/obj/item/tank/internals/emergency_oxygen/double,
+/obj/item/tank/internals/emergency_oxygen/double,
+/obj/item/tank/internals/emergency_oxygen/double,
+/obj/item/tank/internals/emergency_oxygen/double,
+/obj/item/tank/internals/emergency_oxygen/double,
 /turf/open/floor/iron/dark,
 /area/shuttle/pirate)
 "GZ" = (
@@ -1390,7 +1405,7 @@
 /obj/effect/turf_decal/siding/thinplating/dark{
 	dir = 8
 	},
-/obj/machinery/ammo_workbench/unlocked,
+/obj/machinery/suit_storage_unit/inteq,
 /turf/open/floor/iron/dark,
 /area/shuttle/pirate)
 "LP" = (
@@ -1598,7 +1613,7 @@
 	dir = 4
 	},
 /obj/machinery/light/cold/directional/east,
-/obj/machinery/recharge_station,
+/obj/machinery/ammo_workbench/unlocked,
 /turf/open/floor/iron/dark,
 /area/shuttle/pirate)
 "QV" = (
@@ -1812,8 +1827,6 @@
 /obj/structure/sign/departments/cargo/directional/west,
 /obj/item/tank/jetpack/harness,
 /obj/item/tank/jetpack/harness,
-/obj/item/storage/box/syndie_kit/space_suit,
-/obj/item/storage/box/syndie_kit/space_suit,
 /turf/open/floor/iron,
 /area/shuttle/pirate)
 "XQ" = (
@@ -2244,8 +2257,8 @@ wy
 uG
 Kf
 Fg
-jF
 LD
+jF
 Es
 aL
 uG
