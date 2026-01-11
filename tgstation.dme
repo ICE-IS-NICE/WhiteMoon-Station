@@ -10755,6 +10755,7 @@
 #include "modular_zzz\code\modules\storyteller\event_defines\crewset\assault_ops.dm"
 #include "modular_zzz\code\modules\storyteller\event_defines\crewset\blob.dm"
 #include "modular_zzz\code\modules\storyteller\event_defines\crewset\blood_cult.dm"
+#include "modular_zzz\code\modules\storyteller\event_defines\crewset\bloodsucker.dm"
 #include "modular_zzz\code\modules\storyteller\event_defines\crewset\borers.dm"
 #include "modular_zzz\code\modules\storyteller\event_defines\crewset\heretic.dm"
 #include "modular_zzz\code\modules\storyteller\event_defines\crewset\nuke_ops.dm"
